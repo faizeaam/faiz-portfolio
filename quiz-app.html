@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Faiz E Aam Ansari">
+    <meta name="description" content="CodeSprint is a responsive JavaScript quiz app with instant feedback and score tracking.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="CodeSprint | JavaScript Quiz App">
+    <meta property="og:description" content="Test your frontend knowledge with a short interactive JavaScript quiz.">
+    <meta property="og:type" content="website">
+    <title>CodeSprint | JavaScript Quiz App</title>
+    <style>
+        :root { --ink: #20223b; --muted: #74758a; --paper: #f3f2f9; --panel: #fff; --purple: #7367f0; --yellow: #f7cd64; --green: #4cae85; --red: #e47575; --line: rgba(32,34,59,.13); --shadow: 0 22px 55px rgba(32,34,59,.12); }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; color: var(--ink); background: radial-gradient(circle at 90% 8%, rgba(247,205,100,.34), transparent 23rem), var(--paper); font-family: Arial, sans-serif; }
+        button { font: inherit; cursor: pointer; }
+        .page { width: min(900px, calc(100% - 36px)); margin: auto; padding: 28px 0 60px; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; }
+        .brand { display: flex; align-items: center; gap: 12px; color: var(--ink); font-size: 20px; font-weight: 800; letter-spacing: -.05em; text-decoration: none; }
+        .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; color: var(--ink); background: var(--yellow); border-radius: 50%; font-size: 11px; }
+        .back-link { color: var(--muted); font-size: 12px; text-decoration: none; }
+        .back-link:hover { color: var(--purple); }
+        .hero { display: flex; justify-content: space-between; align-items: end; gap: 35px; margin-bottom: 30px; }
+        .eyebrow { margin: 0 0 15px; color: var(--purple); font-size: 11px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+        h1 { margin: 0; font-size: clamp(48px, 8vw, 82px); line-height: .9; letter-spacing: -.09em; }
+        h1 span { color: var(--purple); }
+        .hero-copy { max-width: 260px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+        .quiz-panel { padding: 28px; background: rgba(255,255,255,.85); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); }
+        .quiz-top { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 12px; color: var(--muted); font-size: 12px; font-weight: 700; }
+        .progress-track { height: 8px; overflow: hidden; margin-bottom: 42px; background: var(--paper); border-radius: 99px; }
+        .progress-fill { width: 0; height: 100%; background: var(--purple); border-radius: inherit; transition: width .3s ease; }
+        .question { max-width: 680px; margin: 0 0 25px; font-size: clamp(25px, 4vw, 38px); line-height: 1.1; letter-spacing: -.06em; }
+        .options { display: grid; gap: 11px; }
+        .option { display: flex; align-items: center; gap: 15px; width: 100%; padding: 16px; color: var(--ink); background: var(--paper); border: 2px solid transparent; border-radius: 11px; text-align: left; transition: border-color .2s ease, transform .2s ease, background .2s ease; }
+        .option:hover:not(:disabled) { border-color: var(--purple); transform: translateX(4px); }
+        .option-letter { display: grid; width: 28px; height: 28px; flex: 0 0 auto; place-items: center; color: var(--purple); background: var(--panel); border-radius: 50%; font-size: 12px; font-weight: 800; }
+        .option.correct { color: #246f53; background: rgba(76,174,133,.16); border-color: var(--green); }
+        .option.wrong { color: #a84f4f; background: rgba(228,117,117,.16); border-color: var(--red); }
+        .option:disabled { cursor: default; }
+        .quiz-footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; min-height: 50px; margin-top: 28px; }
+        .feedback { color: var(--muted); font-size: 13px; }
+        .next-button, .restart-button { padding: 13px 19px; color: var(--panel); background: var(--ink); border: 0; border-radius: 9px; font-size: 13px; font-weight: 800; }
+        .next-button:hover, .restart-button:hover { background: var(--purple); }
+        .result { display: none; padding: 25px 0 7px; text-align: center; }
+        .result.show { display: block; }
+        .result-emoji { margin: 0 0 10px; font-size: 45px; }
+        .result h2 { margin: 0; font-size: 38px; letter-spacing: -.06em; }
+        .result p { color: var(--muted); font-size: 14px; }
+        .restart-button { margin-top: 10px; }
+        footer { margin-top: 24px; color: var(--muted); font-size: 11px; text-align: center; }
+        @media (max-width: 600px) { .page { width: min(100% - 26px, 540px); padding-top: 20px; } header { margin-bottom: 44px; } .back-link { display: none; } .hero { display: block; } .hero-copy { max-width: 480px; margin-top: 22px; } .quiz-panel { padding: 19px; } .progress-track { margin-bottom: 31px; } .quiz-footer { align-items: flex-start; flex-direction: column; } .next-button { align-self: stretch; } }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header><a class="brand" href="index.html"><span class="brand-mark">CS</span> CodeSprint</a><a class="back-link" href="index.html">Back to portfolio ↗</a></header>
+        <main>
+            <section class="hero"><div><p class="eyebrow">Frontend knowledge quiz</p><h1>Think. Click. <span>Learn.</span></h1></div><p class="hero-copy">Test your HTML, CSS, and JavaScript basics with five quick questions.</p></section>
+            <section class="quiz-panel" id="quiz-panel">
+                <div class="quiz-top"><span id="question-number">Question 1 of 5</span><span id="score-label">Score: 0</span></div>
+                <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+                <div id="quiz-content"><h2 class="question" id="question"></h2><div class="options" id="options"></div><div class="quiz-footer"><p class="feedback" id="feedback" aria-live="polite">Choose the best answer.</p><button class="next-button" id="next-button" type="button" disabled>Next question →</button></div></div>
+                <div class="result" id="result"><p class="result-emoji" id="result-emoji">🎉</p><h2 id="result-title">Quiz complete!</h2><p id="result-copy"></p><button class="restart-button" id="restart-button" type="button">Try again ↻</button></div>
+            </section>
+        </main>
+        <footer>Built with HTML, CSS and JavaScript</footer>
+    </div>
+    <script>
+        const questions = [
+            { question: "Which HTML element is used for the largest heading?", options: ["<heading>", "<h1>", "<head>", "<title>"], answer: 1 },
+            { question: "Which CSS property changes the text color?", options: ["font-style", "text-color", "color", "foreground"], answer: 2 },
+            { question: "Which keyword creates a block-scoped variable in JavaScript?", options: ["var", "let", "define", "constant"], answer: 1 },
+            { question: "What does localStorage do?", options: ["Stores data in the browser", "Hosts a website", "Compresses images", "Runs a server"], answer: 0 },
+            { question: "Which method converts JSON text into a JavaScript object?", options: ["JSON.stringify()", "JSON.parse()", "JSON.object()", "JSON.convert()"], answer: 1 }
+        ];
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+        const questionNumber = document.querySelector("#question-number");
+        const scoreLabel = document.querySelector("#score-label");
+        const progressFill = document.querySelector("#progress-fill");
+        const question = document.querySelector("#question");
+        const options = document.querySelector("#options");
+        const feedback = document.querySelector("#feedback");
+        const nextButton = document.querySelector("#next-button");
+        const quizContent = document.querySelector("#quiz-content");
+        const result = document.querySelector("#result");
+
+        function renderQuestion() {
+            const item = questions[currentQuestion];
+            answered = false;
+            questionNumber.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            scoreLabel.textContent = `Score: ${score}`;
+            progressFill.style.width = `${(currentQuestion / questions.length) * 100}%`;
+            question.textContent = item.question;
+            feedback.textContent = "Choose the best answer.";
+            nextButton.disabled = true;
+            options.innerHTML = item.options.map((option, index) => `<button class="option" type="button" data-index="${index}"><span class="option-letter">${String.fromCharCode(65 + index)}</span><span>${option}</span></button>`).join("");
+        }
+        options.addEventListener("click", event => {
+            const selected = event.target.closest(".option");
+            if (!selected || answered) return;
+            answered = true;
+            const selectedIndex = Number(selected.dataset.index);
+            const correctIndex = questions[currentQuestion].answer;
+            document.querySelectorAll(".option").forEach(option => { option.disabled = true; if (Number(option.dataset.index) === correctIndex) option.classList.add("correct"); });
+            if (selectedIndex === correctIndex) { score += 1; selected.classList.add("correct"); feedback.textContent = "Correct. Nice work!"; } else { selected.classList.add("wrong"); feedback.textContent = `Not quite. The correct answer is ${questions[currentQuestion].options[correctIndex]}.`; }
+            scoreLabel.textContent = `Score: ${score}`;
+            nextButton.disabled = false;
+        });
+        nextButton.addEventListener("click", () => { currentQuestion += 1; if (currentQuestion < questions.length) renderQuestion(); else showResult(); });
+        function showResult() {
+            quizContent.style.display = "none";
+            result.classList.add("show");
+            progressFill.style.width = "100%";
+            document.querySelector("#result-copy").textContent = `You scored ${score} out of ${questions.length}. ${score >= 4 ? "Your frontend fundamentals are looking strong." : "Keep practicing and try again to improve your score."}`;
+            document.querySelector("#result-emoji").textContent = score >= 4 ? "🏆" : score >= 3 ? "👏" : "💡";
+            document.querySelector("#result-title").textContent = score >= 4 ? "Great result!" : "Good start!";
+        }
+        document.querySelector("#restart-button").addEventListener("click", () => { currentQuestion = 0; score = 0; quizContent.style.display = "block"; result.classList.remove("show"); renderQuestion(); });
+        renderQuestion();
+    </script>
+</body>
+</html>
