@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Faiz E Aam Ansari">
+    <meta name="description" content="LocateMe is a permission-based browser location demo with an interactive map.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="LocateMe | Permission-Based Location Demo">
+    <meta property="og:description" content="Share your own current location on an interactive map with your explicit permission.">
+    <meta property="og:type" content="website">
+    <title>LocateMe | Permission-Based Location Demo</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <style>
+        :root { --ink: #17252a; --muted: #657276; --paper: #f4f1ea; --cream: #fffdf8; --lime: #d8f36b; --coral: #ff735c; --line: rgba(23,37,42,.16); --shadow: 0 18px 50px rgba(23,37,42,.1); }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; color: var(--ink); background: radial-gradient(circle at 90% 5%, rgba(216,243,107,.35), transparent 25rem), var(--paper); font-family: "Trebuchet MS", sans-serif; }
+        button { font: inherit; cursor: pointer; }
+        .page { width: min(1080px, calc(100% - 40px)); margin: auto; padding: 28px 0 60px; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 58px; }
+        .brand { display: flex; align-items: center; gap: 12px; color: var(--ink); font-size: 20px; font-weight: 700; text-decoration: none; }
+        .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; color: var(--ink); background: var(--lime); border-radius: 50%; font-family: monospace; font-size: 12px; }
+        .back-link { color: var(--muted); font-size: 12px; text-decoration: none; }
+        .back-link:hover { color: var(--coral); }
+        .hero { max-width: 690px; margin-bottom: 34px; }
+        .eyebrow { margin: 0 0 16px; color: var(--coral); font-family: monospace; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+        h1 { margin: 0; font-size: clamp(48px, 8vw, 84px); line-height: .92; letter-spacing: -.08em; }
+        h1 em { color: var(--coral); font-style: normal; }
+        .hero p { max-width: 560px; margin: 23px 0 0; color: var(--muted); font-size: 16px; line-height: 1.6; }
+        .notice { display: flex; gap: 10px; align-items: flex-start; margin: 22px 0; padding: 14px 16px; color: var(--ink); background: rgba(216,243,107,.35); border: 1px solid rgba(23,37,42,.1); border-radius: 12px; font-size: 12px; line-height: 1.5; }
+        .notice strong { color: var(--coral); }
+        .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 14px; }
+        .locate-button { padding: 14px 19px; color: var(--cream); background: var(--ink); border: 0; border-radius: 10px; font-size: 13px; font-weight: 700; transition: transform .2s ease, background .2s ease; }
+        .locate-button:hover { background: var(--coral); transform: translateY(-2px); }
+        .locate-button:disabled { cursor: wait; opacity: .6; }
+        .status { min-height: 18px; margin: 0; color: var(--muted); font-size: 12px; text-align: right; }
+        .status.error { color: #b84e3b; }
+        .map-panel { padding: 10px; background: var(--cream); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); }
+        #map { height: 430px; border-radius: 12px; }
+        .details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
+        .detail { padding: 17px; background: var(--cream); border: 1px solid var(--line); border-radius: 12px; }
+        .detail span { display: block; margin-bottom: 8px; color: var(--muted); font-family: monospace; font-size: 10px; text-transform: uppercase; }
+        .detail strong { font-size: 14px; }
+        .privacy { margin-top: 25px; color: var(--muted); font-family: monospace; font-size: 10px; line-height: 1.6; text-align: center; }
+        @media (max-width: 600px) { .page { width: min(100% - 28px, 560px); padding-top: 20px; } header { margin-bottom: 43px; } .back-link { display: none; } .toolbar { display: block; } .status { margin-top: 12px; text-align: left; } #map { height: 350px; } .details { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header><a class="brand" href="index.html"><span class="brand-mark">LM</span> LocateMe</a><a class="back-link" href="index.html">Back to portfolio ↗</a></header>
+        <main>
+            <section class="hero"><p class="eyebrow">Permission-based location demo</p><h1>Your location, <em>your choice.</em></h1><p>Use your browser's location permission to place yourself on the map. This demo only reads your location after you press the button.</p></section>
+            <div class="notice"><strong>Privacy first:</strong><span>Your location is used only in this browser session. It is not sent to a server or shared with anyone.</span></div>
+            <div class="toolbar"><button class="locate-button" id="locate-button" type="button">Use my location ↗</button><p class="status" id="status" aria-live="polite">Location permission has not been requested.</p></div>
+            <section class="map-panel"><div id="map" aria-label="Interactive location map"></div></section>
+            <section class="details" aria-label="Location details"><div class="detail"><span>Latitude</span><strong id="latitude">--</strong></div><div class="detail"><span>Longitude</span><strong id="longitude">--</strong></div><div class="detail"><span>Accuracy</span><strong id="accuracy">--</strong></div></section>
+            <p class="privacy">LocateMe does not track devices, phone numbers, or other people. Stop sharing by closing this page or revoking browser permission.</p>
+        </main>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        const map = L.map("map").setView([20.5937, 78.9629], 4);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "&copy; OpenStreetMap contributors" }).addTo(map);
+        let marker;
+        let circle;
+        const locateButton = document.querySelector("#locate-button");
+        const status = document.querySelector("#status");
+        const latitude = document.querySelector("#latitude");
+        const longitude = document.querySelector("#longitude");
+        const accuracy = document.querySelector("#accuracy");
+
+        function showError(message) { status.textContent = message; status.className = "status error"; }
+        function showLocation(position) {
+            const { latitude: lat, longitude: lng, accuracy: metres } = position.coords;
+            latitude.textContent = lat.toFixed(5);
+            longitude.textContent = lng.toFixed(5);
+            accuracy.textContent = `${Math.round(metres)} metres`;
+            status.textContent = "Location shown with your permission.";
+            status.className = "status";
+            if (marker) map.removeLayer(marker);
+            if (circle) map.removeLayer(circle);
+            marker = L.marker([lat, lng]).addTo(map).bindPopup("Your location").openPopup();
+            circle = L.circle([lat, lng], { radius: metres, color: "#ff735c", fillColor: "#d8f36b", fillOpacity: .25 }).addTo(map);
+            map.setView([lat, lng], 15);
+        }
+        locateButton.addEventListener("click", () => {
+            if (!navigator.geolocation) { showError("Geolocation is not supported by this browser."); return; }
+            locateButton.disabled = true;
+            status.textContent = "Requesting permission and finding you...";
+            status.className = "status";
+            navigator.geolocation.getCurrentPosition(showLocation, error => {
+                const messages = { 1: "Permission denied. Allow location access and try again.", 2: "Location is unavailable right now.", 3: "Location request timed out. Try again." };
+                showError(messages[error.code] || "Could not get your location.");
+                locateButton.disabled = false;
+            }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+        });
+    </script>
+</body>
+</html>
