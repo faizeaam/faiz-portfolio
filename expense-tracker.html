@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Faiz E Aam Ansari">
+    <meta name="description" content="Paisa is a simple personal expense tracker for managing income, spending, and monthly balance.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Paisa | Personal Expense Tracker">
+    <meta property="og:description" content="Track income, expenses, and spending categories in one simple dashboard.">
+    <meta property="og:type" content="website">
+    <title>Paisa | Personal Expense Tracker by Faiz E Aam Ansari</title>
+    <style>
+        :root {
+            --ink: #1c2420;
+            --muted: #728078;
+            --paper: #f2f0e9;
+            --panel: #fffdf8;
+            --green: #a9db75;
+            --dark-green: #30634b;
+            --red: #e87861;
+            --line: rgba(28, 36, 32, .14);
+            --shadow: 0 18px 50px rgba(28, 36, 32, .08);
+        }
+
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; color: var(--ink); background: radial-gradient(circle at 10% 0%, rgba(169, 219, 117, .3), transparent 27rem), var(--paper); font-family: Arial, sans-serif; }
+        button, input, select { font: inherit; }
+        button { cursor: pointer; }
+        .page { width: min(1120px, calc(100% - 40px)); margin: auto; padding: 28px 0 60px; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; }
+        .brand { display: flex; align-items: center; gap: 12px; color: var(--ink); font-size: 21px; font-weight: 800; letter-spacing: -.05em; text-decoration: none; }
+        .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; color: var(--ink); background: var(--green); border-radius: 50%; font-size: 12px; }
+        .back-link { color: var(--muted); font-size: 12px; text-decoration: none; }
+        .back-link:hover { color: var(--dark-green); }
+        .hero { display: flex; justify-content: space-between; align-items: end; gap: 40px; margin-bottom: 35px; }
+        .eyebrow { margin: 0 0 15px; color: var(--dark-green); font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+        h1 { max-width: 620px; margin: 0; font-size: clamp(48px, 8vw, 86px); line-height: .9; letter-spacing: -.09em; }
+        h1 span { color: var(--dark-green); }
+        .hero-copy { max-width: 315px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+        .summary { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 13px; margin-bottom: 20px; }
+        .summary-card { min-height: 112px; padding: 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+        .summary-card.balance { color: var(--panel); background: var(--dark-green); }
+        .summary-card p { margin: 0 0 15px; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+        .summary-card.balance p { color: rgba(255,255,255,.7); }
+        .summary-card strong { font-size: 27px; letter-spacing: -.05em; }
+        .workspace { display: grid; grid-template-columns: 1.35fr .65fr; gap: 20px; align-items: start; }
+        .panel { padding: 25px; background: rgba(255,253,248,.84); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+        .panel-heading { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 22px; }
+        h2 { margin: 0; font-size: 21px; letter-spacing: -.04em; }
+        .entry-form { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+        .entry-form .wide { grid-column: span 2; }
+        input, select { width: 100%; min-height: 45px; padding: 0 13px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 9px; outline: none; }
+        input:focus, select:focus { border-color: var(--dark-green); box-shadow: 0 0 0 3px rgba(48,99,75,.13); }
+        .add-button { min-height: 45px; color: var(--ink); background: var(--green); border: 0; border-radius: 9px; font-weight: 800; transition: transform .2s ease, background .2s ease; }
+        .add-button:hover { background: #c7ee8e; transform: translateY(-2px); }
+        .transaction-list { display: grid; gap: 9px; }
+        .transaction { display: grid; grid-template-columns: 38px 1fr auto auto; gap: 12px; align-items: center; padding: 12px; border: 1px solid var(--line); border-radius: 11px; animation: rise .25s ease both; }
+        .category-icon { display: grid; width: 38px; height: 38px; place-items: center; background: rgba(169,219,117,.3); border-radius: 10px; font-size: 18px; }
+        .transaction-title { margin: 0 0 4px; font-size: 13px; font-weight: 800; }
+        .transaction-meta { color: var(--muted); font-size: 11px; }
+        .amount { font-size: 14px; font-weight: 800; white-space: nowrap; }
+        .amount.income { color: var(--dark-green); }
+        .amount.expense { color: var(--red); }
+        .delete-button { width: 28px; height: 28px; color: var(--muted); background: transparent; border: 0; border-radius: 50%; font-size: 18px; }
+        .delete-button:hover { color: var(--red); background: rgba(232,120,97,.12); }
+        .empty { padding: 32px 10px; color: var(--muted); font-size: 13px; text-align: center; }
+        .side-title { margin-bottom: 17px; }
+        .category-row { display: grid; grid-template-columns: 1fr 80px; gap: 10px; align-items: center; margin-bottom: 14px; font-size: 12px; }
+        .category-label { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--muted); }
+        .category-bar { height: 7px; overflow: hidden; background: var(--paper); border-radius: 99px; }
+        .category-fill { height: 100%; background: var(--dark-green); border-radius: inherit; }
+        .category-amount { color: var(--ink); text-align: right; font-weight: 700; }
+        .tip { margin-top: 25px; padding: 17px; color: var(--ink); background: var(--green); border-radius: 11px; font-size: 12px; line-height: 1.5; }
+        .tip b { display: block; margin-bottom: 7px; }
+        footer { margin-top: 28px; color: var(--muted); font-size: 11px; text-align: center; }
+        @keyframes rise { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 780px) {
+            .page { width: min(100% - 28px, 560px); padding-top: 20px; }
+            header { margin-bottom: 45px; }
+            .hero, .workspace { display: grid; grid-template-columns: 1fr; gap: 24px; }
+            .hero-copy { max-width: 460px; }
+            .summary { grid-template-columns: 1fr 1fr; }
+            .summary-card.balance { grid-column: 1 / -1; }
+        }
+        @media (max-width: 480px) {
+            .back-link { display: none; }
+            .panel { padding: 18px; }
+            .entry-form { grid-template-columns: 1fr 1fr; }
+            .entry-form .wide { grid-column: 1 / -1; }
+            .entry-form .add-button { grid-column: 1 / -1; }
+            .transaction { grid-template-columns: 34px 1fr auto; }
+            .category-icon { width: 34px; height: 34px; }
+            .transaction .delete-button { grid-column: 3; grid-row: 1; }
+            .transaction .amount { grid-column: 2 / -1; grid-row: 2; text-align: right; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <a class="brand" href="index.html"><span class="brand-mark">P</span> Paisa</a>
+            <a class="back-link" href="index.html">Back to portfolio ↗</a>
+        </header>
+        <main>
+            <section class="hero">
+                <div><p class="eyebrow">Personal finance tracker</p><h1>Know where your <span>money</span> goes.</h1></div>
+                <p class="hero-copy">A simple, private dashboard for tracking your income, expenses, and everyday spending habits.</p>
+            </section>
+            <section class="summary" aria-label="Money summary">
+                <article class="summary-card balance"><p>Current balance</p><strong id="balance">Rs 0</strong></article>
+                <article class="summary-card"><p>Total income</p><strong id="income">Rs 0</strong></article>
+                <article class="summary-card"><p>Total expenses</p><strong id="expenses">Rs 0</strong></article>
+            </section>
+            <section class="workspace">
+                <div class="panel">
+                    <div class="panel-heading"><h2>Transactions</h2><span id="transaction-count" class="transaction-meta">0 entries</span></div>
+                    <form class="entry-form" id="entry-form">
+                        <input class="wide" id="title-input" type="text" placeholder="What was this for?" aria-label="Transaction title" maxlength="60" required>
+                        <input id="amount-input" type="number" min="1" step="0.01" placeholder="Amount" aria-label="Amount" required>
+                        <select id="type-input" aria-label="Transaction type"><option value="expense">Expense</option><option value="income">Income</option></select>
+                        <select id="category-input" aria-label="Category"><option>Food</option><option>Travel</option><option>Study</option><option>Shopping</option><option>Bills</option><option>Other</option></select>
+                        <input id="date-input" type="date" aria-label="Date" required>
+                        <button class="add-button" type="submit">Add entry +</button>
+                    </form>
+                    <div class="transaction-list" id="transaction-list"></div>
+                </div>
+                <aside class="panel">
+                    <h2 class="side-title">Spending by category</h2>
+                    <div id="category-breakdown"></div>
+                    <div class="tip"><b>Money habit</b>Tracking small expenses makes your spending pattern visible. Add entries regularly for a clearer picture.</div>
+                </aside>
+            </section>
+        </main>
+        <footer>All data stays in this browser using local storage.</footer>
+    </div>
+    <script>
+        const storageKey = "paisa-transactions";
+        let transactions = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        const categoryIcons = { Food: "🍽", Travel: "🚆", Study: "📚", Shopping: "🛍", Bills: "💡", Other: "✦" };
+        const form = document.querySelector("#entry-form");
+        const titleInput = document.querySelector("#title-input");
+        const amountInput = document.querySelector("#amount-input");
+        const typeInput = document.querySelector("#type-input");
+        const categoryInput = document.querySelector("#category-input");
+        const dateInput = document.querySelector("#date-input");
+        const transactionList = document.querySelector("#transaction-list");
+        const categoryBreakdown = document.querySelector("#category-breakdown");
+        const currency = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 });
+        dateInput.value = new Date().toISOString().slice(0, 10);
+
+        function money(value) { return `Rs ${currency.format(value)}`; }
+        function escapeHtml(value) { return value.replace(/[&<>'"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#039;", "\"": "&quot;" }[character])); }
+        function save() { localStorage.setItem(storageKey, JSON.stringify(transactions)); }
+        function render() {
+            const income = transactions.filter(item => item.type === "income").reduce((sum, item) => sum + item.amount, 0);
+            const expenses = transactions.filter(item => item.type === "expense").reduce((sum, item) => sum + item.amount, 0);
+            document.querySelector("#balance").textContent = money(income - expenses);
+            document.querySelector("#income").textContent = money(income);
+            document.querySelector("#expenses").textContent = money(expenses);
+            document.querySelector("#transaction-count").textContent = `${transactions.length} ${transactions.length === 1 ? "entry" : "entries"}`;
+            transactionList.innerHTML = transactions.length ? transactions.slice().sort((a, b) => b.date.localeCompare(a.date)).map(item => `
+                <article class="transaction">
+                    <span class="category-icon">${categoryIcons[item.category] || "✦"}</span>
+                    <div><p class="transaction-title">${escapeHtml(item.title)}</p><span class="transaction-meta">${escapeHtml(item.category)} · ${item.date}</span></div>
+                    <strong class="amount ${item.type}">${item.type === "income" ? "+" : "-"}${money(item.amount)}</strong>
+                    <button class="delete-button" type="button" data-id="${item.id}" aria-label="Delete ${escapeHtml(item.title)}">&times;</button>
+                </article>
+            `).join("") : `<div class="empty">No transactions yet. Add your first entry above.</div>`;
+            renderCategories();
+        }
+        function renderCategories() {
+            const categoryTotals = {};
+            transactions.filter(item => item.type === "expense").forEach(item => { categoryTotals[item.category] = (categoryTotals[item.category] || 0) + item.amount; });
+            const categories = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1]);
+            const highest = categories[0]?.[1] || 1;
+            categoryBreakdown.innerHTML = categories.length ? categories.map(([category, total]) => `
+                <div class="category-row"><div><div class="category-label"><span>${escapeHtml(category)}</span><span>${Math.round((total / (categories.reduce((sum, item) => sum + item[1], 0))) * 100)}%</span></div><div class="category-bar"><div class="category-fill" style="width: ${(total / highest) * 100}%"></div></div></div><span class="category-amount">${money(total)}</span></div>
+            `).join("") : `<div class="empty">Your expense categories will appear here.</div>`;
+        }
+        form.addEventListener("submit", event => {
+            event.preventDefault();
+            transactions.push({ id: Date.now().toString(), title: titleInput.value.trim(), amount: Number(amountInput.value), type: typeInput.value, category: categoryInput.value, date: dateInput.value });
+            save();
+            form.reset();
+            dateInput.value = new Date().toISOString().slice(0, 10);
+            render();
+            titleInput.focus();
+        });
+        transactionList.addEventListener("click", event => {
+            const button = event.target.closest("[data-id]");
+            if (!button) return;
+            transactions = transactions.filter(item => item.id !== button.dataset.id);
+            save();
+            render();
+        });
+        render();
+    </script>
+</body>
+</html>
