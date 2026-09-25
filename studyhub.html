@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Faiz E Aam Ansari">
+    <meta name="description" content="StudyHub is a student productivity dashboard with tasks, notes, focus timer, and progress tracking.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="StudyHub | Student Productivity Dashboard">
+    <meta property="og:description" content="Plan study tasks, capture quick notes, and focus with a Pomodoro timer.">
+    <meta property="og:type" content="website">
+    <title>StudyHub | Student Productivity Dashboard</title>
+    <style>
+        :root { --ink: #182a2e; --muted: #718083; --paper: #eef3f0; --panel: #fffefa; --mint: #a8e3c1; --yellow: #f5cd69; --coral: #ed7864; --blue: #a8dce6; --line: rgba(24,42,46,.13); --shadow: 0 18px 45px rgba(24,42,46,.09); }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; color: var(--ink); background: radial-gradient(circle at 86% 6%, rgba(245,205,105,.35), transparent 24rem), var(--paper); font-family: Arial, sans-serif; }
+        button, input, textarea { font: inherit; }
+        button { cursor: pointer; }
+        .page { width: min(1160px, calc(100% - 40px)); margin: auto; padding: 28px 0 60px; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 54px; }
+        .brand { display: flex; align-items: center; gap: 12px; color: var(--ink); font-size: 21px; font-weight: 800; letter-spacing: -.06em; text-decoration: none; }
+        .brand-mark { display: grid; width: 39px; height: 39px; place-items: center; background: var(--mint); border-radius: 50%; font-size: 12px; }
+        .back-link { color: var(--muted); font-size: 12px; text-decoration: none; }
+        .back-link:hover { color: var(--coral); }
+        .hero { display: flex; justify-content: space-between; align-items: end; gap: 45px; margin-bottom: 32px; }
+        .eyebrow { margin: 0 0 14px; color: #348361; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+        h1 { margin: 0; font-size: clamp(45px, 7vw, 82px); line-height: .9; letter-spacing: -.09em; }
+        h1 span { color: #348361; }
+        .hero-copy { max-width: 330px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+        .dashboard { display: grid; grid-template-columns: 1.1fr .9fr; gap: 18px; align-items: start; }
+        .panel { padding: 23px; background: rgba(255,254,250,.85); border: 1px solid var(--line); border-radius: 17px; box-shadow: var(--shadow); }
+        .panel-heading { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px; }
+        h2 { margin: 0; font-size: 20px; letter-spacing: -.05em; }
+        .muted { color: var(--muted); font-size: 11px; }
+        .task-form { display: grid; grid-template-columns: 1fr 130px auto; gap: 8px; margin-bottom: 18px; }
+        input, textarea { width: 100%; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 9px; outline: none; }
+        input { min-height: 44px; padding: 0 12px; }
+        textarea { min-height: 115px; padding: 13px; resize: vertical; line-height: 1.5; }
+        input:focus, textarea:focus { border-color: #348361; box-shadow: 0 0 0 3px rgba(52,131,97,.13); }
+        .button { min-height: 44px; padding: 0 16px; color: var(--ink); background: var(--mint); border: 0; border-radius: 9px; font-size: 12px; font-weight: 800; }
+        .button:hover { background: var(--yellow); }
+        .task-list { display: grid; gap: 8px; }
+        .task { display: grid; grid-template-columns: 20px 1fr auto; gap: 11px; align-items: center; padding: 12px; border: 1px solid var(--line); border-radius: 10px; }
+        .task.done { background: rgba(168,227,193,.25); }
+        .task input { width: 18px; min-height: 18px; accent-color: #348361; }
+        .task-title { margin: 0 0 4px; font-size: 13px; font-weight: 700; }
+        .task.done .task-title { color: var(--muted); text-decoration: line-through; }
+        .task-meta { color: var(--muted); font-size: 10px; }
+        .icon-button { width: 28px; height: 28px; color: var(--muted); background: transparent; border: 0; border-radius: 50%; }
+        .icon-button:hover { color: var(--coral); background: rgba(237,120,100,.13); }
+        .empty { padding: 24px 8px; color: var(--muted); font-size: 12px; text-align: center; }
+        .timer-panel { background: var(--ink); color: var(--panel); }
+        .timer-panel .panel-heading { color: var(--mint); }
+        .timer-mode { display: flex; gap: 7px; margin-bottom: 25px; }
+        .mode { padding: 7px 10px; color: rgba(255,254,250,.65); background: transparent; border: 1px solid rgba(255,254,250,.2); border-radius: 99px; font-size: 10px; }
+        .mode.active { color: var(--ink); background: var(--mint); border-color: var(--mint); }
+        .timer-display { margin: 8px 0 25px; font-family: Georgia, serif; font-size: 78px; line-height: .8; letter-spacing: -.08em; text-align: center; }
+        .timer-controls { display: flex; justify-content: center; gap: 8px; }
+        .timer-controls button { padding: 11px 18px; border: 0; border-radius: 8px; font-size: 12px; font-weight: 800; }
+        #timer-toggle { color: var(--ink); background: var(--yellow); }
+        #timer-reset { color: var(--panel); background: rgba(255,254,250,.13); }
+        .notes-panel { grid-column: 1 / -1; }
+        .notes-form { display: grid; grid-template-columns: 1fr 170px; gap: 12px; }
+        .notes-form .button { align-self: start; }
+        .progress-panel { grid-column: 1 / -1; }
+        .progress-line { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--muted); font-size: 12px; }
+        .progress-track { height: 10px; overflow: hidden; background: var(--paper); border-radius: 99px; }
+        .progress-fill { width: 0; height: 100%; background: var(--coral); border-radius: inherit; transition: width .3s ease; }
+        .tip { margin-top: 17px; padding: 13px 15px; background: var(--blue); border-radius: 10px; color: var(--ink); font-size: 12px; line-height: 1.5; }
+        footer { margin-top: 25px; color: var(--muted); font-size: 10px; text-align: center; }
+        @media (max-width: 760px) { .page { width: min(100% - 28px, 560px); padding-top: 20px; } header { margin-bottom: 43px; } .back-link { display: none; } .hero { display: block; } .hero-copy { max-width: 500px; margin-top: 21px; } .dashboard { grid-template-columns: 1fr; } .notes-panel, .progress-panel { grid-column: auto; } }
+        @media (max-width: 470px) { .panel { padding: 18px; } .task-form, .notes-form { grid-template-columns: 1fr; } .timer-display { font-size: 68px; } }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header><a class="brand" href="index.html"><span class="brand-mark">SH</span> StudyHub</a><a class="back-link" href="index.html">Back to portfolio ↗</a></header>
+        <main>
+            <section class="hero"><div><p class="eyebrow">Student productivity dashboard</p><h1>Study smarter, <span>daily.</span></h1></div><p class="hero-copy">Plan your work, protect your focus, and keep your learning moving forward in one calm workspace.</p></section>
+            <section class="dashboard">
+                <article class="panel"><div class="panel-heading"><h2>Today's tasks</h2><span class="muted" id="task-count">0 tasks</span></div><form class="task-form" id="task-form"><input id="task-input" placeholder="Add a study task" aria-label="Study task" maxlength="70" required><input id="subject-input" placeholder="Subject" aria-label="Subject" maxlength="25"><button class="button" type="submit">Add task +</button></form><div class="task-list" id="task-list"></div></article>
+                <article class="panel timer-panel"><div class="panel-heading"><h2>Focus timer</h2><span class="muted" style="color:rgba(255,254,250,.6)" id="timer-label">Focus session</span></div><div class="timer-mode"><button class="mode active" data-minutes="25" type="button">25 min</button><button class="mode" data-minutes="5" type="button">5 min break</button></div><div class="timer-display" id="timer-display">25:00</div><div class="timer-controls"><button id="timer-toggle" type="button">Start focus</button><button id="timer-reset" type="button">Reset</button></div></article>
+                <article class="panel notes-panel"><div class="panel-heading"><h2>Quick notes</h2><span class="muted">Saved on this device</span></div><div class="notes-form"><textarea id="notes" placeholder="Write a concept, reminder, or idea..."></textarea><button class="button" id="save-notes" type="button">Save notes</button></div></article>
+                <article class="panel progress-panel"><div class="panel-heading"><h2>Learning progress</h2><span class="muted" id="progress-label">0% complete</span></div><div class="progress-line"><span>Tasks completed</span><span id="progress-count">0 / 0</span></div><div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div><div class="tip"><b>Study habit:</b> Choose one clear task, start a focus session, and take a short break when the timer ends.</div></article>
+            </section>
+        </main>
+        <footer>Built with HTML, CSS and JavaScript · Your data stays in this browser</footer>
+    </div>
+    <script>
+        const taskKey = "studyhub-tasks";
+        const notesKey = "studyhub-notes";
+        let tasks = JSON.parse(localStorage.getItem(taskKey) || "[]");
+        let seconds = 25 * 60;
+        let timerId = null;
+        const taskForm = document.querySelector("#task-form");
+        const taskInput = document.querySelector("#task-input");
+        const subjectInput = document.querySelector("#subject-input");
+        const taskList = document.querySelector("#task-list");
+        const timerDisplay = document.querySelector("#timer-display");
+        const timerToggle = document.querySelector("#timer-toggle");
+        function saveTasks() { localStorage.setItem(taskKey, JSON.stringify(tasks)); }
+        function escapeHtml(value) { return value.replace(/[&<>'"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#039;", "\"": "&quot;" }[character])); }
+        function renderTasks() {
+            const done = tasks.filter(task => task.done).length;
+            taskList.innerHTML = tasks.length ? tasks.map(task => `<article class="task ${task.done ? "done" : ""}"><input type="checkbox" ${task.done ? "checked" : ""} data-action="toggle" data-id="${task.id}" aria-label="Complete ${escapeHtml(task.title)}"><div><p class="task-title">${escapeHtml(task.title)}</p><span class="task-meta">${escapeHtml(task.subject || "General")}</span></div><button class="icon-button" type="button" data-action="delete" data-id="${task.id}" aria-label="Delete ${escapeHtml(task.title)}">&times;</button></article>`).join("") : `<div class="empty">No tasks yet. Add one clear next step.</div>`;
+            document.querySelector("#task-count").textContent = `${tasks.length} ${tasks.length === 1 ? "task" : "tasks"}`;
+            const progress = tasks.length ? Math.round((done / tasks.length) * 100) : 0;
+            document.querySelector("#progress-label").textContent = `${progress}% complete`;
+            document.querySelector("#progress-count").textContent = `${done} / ${tasks.length}`;
+            document.querySelector("#progress-fill").style.width = `${progress}%`;
+        }
+        taskForm.addEventListener("submit", event => { event.preventDefault(); tasks.unshift({ id: Date.now().toString(), title: taskInput.value.trim(), subject: subjectInput.value.trim(), done: false }); saveTasks(); taskForm.reset(); renderTasks(); taskInput.focus(); });
+        taskList.addEventListener("click", event => { const control = event.target.closest("[data-action]"); if (!control) return; const task = tasks.find(item => item.id === control.dataset.id); if (!task) return; if (control.dataset.action === "toggle") task.done = !task.done; if (control.dataset.action === "delete") tasks = tasks.filter(item => item.id !== control.dataset.id); saveTasks(); renderTasks(); });
+        document.querySelector("#notes").value = localStorage.getItem(notesKey) || "";
+        document.querySelector("#save-notes").addEventListener("click", () => { localStorage.setItem(notesKey, document.querySelector("#notes").value); document.querySelector("#save-notes").textContent = "Saved ✓"; setTimeout(() => document.querySelector("#save-notes").textContent = "Save notes", 1400); });
+        function updateTimer() { const minutes = Math.floor(seconds / 60).toString().padStart(2, "0"); const remaining = (seconds % 60).toString().padStart(2, "0"); timerDisplay.textContent = `${minutes}:${remaining}`; }
+        function stopTimer() { clearInterval(timerId); timerId = null; timerToggle.textContent = "Start focus"; }
+        timerToggle.addEventListener("click", () => { if (timerId) { stopTimer(); return; } timerToggle.textContent = "Pause"; timerId = setInterval(() => { seconds -= 1; updateTimer(); if (seconds <= 0) { stopTimer(); alert("Focus session complete. Take a short break."); } }, 1000); });
+        document.querySelector("#timer-reset").addEventListener("click", () => { stopTimer(); seconds = Number(document.querySelector(".mode.active").dataset.minutes) * 60; updateTimer(); });
+        document.querySelectorAll(".mode").forEach(button => button.addEventListener("click", () => { stopTimer(); document.querySelectorAll(".mode").forEach(item => item.classList.toggle("active", item === button)); seconds = Number(button.dataset.minutes) * 60; document.querySelector("#timer-label").textContent = button.dataset.minutes === "25" ? "Focus session" : "Quick break"; updateTimer(); }));
+        renderTasks(); updateTimer();
+    </script>
+</body>
+</html>
