@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Match</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --panel: #111827;
+            --card: #1f2937;
+            --card-face: #f8fafc;
+            --primary: #7c3aed;
+            --secondary: #22c55e;
+            --accent: #fbbf24;
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: radial-gradient(circle at top, #1e293b, var(--bg) 45%);
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--text);
+        }
+
+        .app {
+            width: min(92vw, 760px);
+            background: rgba(17, 24, 39, 0.92);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: 0 28px 55px rgba(0,0,0,0.35);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .title {
+            font-size: clamp(1.5rem, 3vw, 2.4rem);
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        .stats {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            background: rgba(124, 58, 237, 0.14);
+            border: 1px solid rgba(124, 58, 237, 0.24);
+            color: var(--text);
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .pill strong {
+            color: white;
+            font-size: 1rem;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+        .card {
+            position: relative;
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 16px;
+            background: transparent;
+            cursor: pointer;
+            perspective: 1000px;
+            padding: 0;
+        }
+
+        .card-inner {
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            transition: transform 0.5s ease;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner,
+        .card.matched .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            user-select: none;
+        }
+
+        .front {
+            background: linear-gradient(135deg, #0ea5e9, #7c3aed);
+            color: white;
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.15);
+        }
+
+        .back {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            color: #111827;
+            transform: rotateY(180deg);
+            box-shadow: inset 0 0 0 2px rgba(15, 23, 42, 0.08);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 18px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .restart {
+            border: none;
+            background: linear-gradient(135deg, var(--secondary), #16a34a);
+            color: white;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            border-radius: 12px;
+            padding: 12px 18px;
+            cursor: pointer;
+        }
+
+        .message {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 560px) {
+            .board {
+                gap: 10px;
+            }
+
+            .app {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <div class="title">Memory Match</div>
+            <div class="stats">
+                <div class="pill">Moves <strong id="moves">0</strong></div>
+                <div class="pill">Best <strong id="best">0</strong></div>
+            </div>
+        </div>
+
+        <div class="board" id="board"></div>
+
+        <div class="controls">
+            <button class="restart" id="restartBtn">Restart</button>
+            <div class="message" id="message">Find all the pairs.</div>
+        </div>
+    </div>
+
+    <script>
+        const symbols = ['🌙', '⭐', '☀️', '⚡', '🎯', '🔥'];
+        const board = document.getElementById('board');
+        const movesEl = document.getElementById('moves');
+        const bestEl = document.getElementById('best');
+        const messageEl = document.getElementById('message');
+        const restartBtn = document.getElementById('restartBtn');
+
+        let deck = [];
+        let firstCard = null;
+        let secondCard = null;
+        let lockBoard = false;
+        let moves = 0;
+        let matchedPairs = 0;
+        let best = Number(localStorage.getItem('memoryMatchBest')) || 0;
+
+        bestEl.textContent = best;
+
+        function shuffle(array) {
+            const copy = [...array];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function createDeck() {
+            const doubled = [...symbols, ...symbols];
+            return shuffle(doubled).map((symbol, index) => ({
+                id: index,
+                symbol,
+                matched: false
+            }));
+        }
+
+        function setMessage(text) {
+            messageEl.textContent = text;
+        }
+
+        function updateMoves() {
+            movesEl.textContent = moves;
+        }
+
+        function updateBest() {
+            if (moves > 0 && matchedPairs === symbols.length) {
+                if (best === 0 || moves < best) {
+                    best = moves;
+                    localStorage.setItem('memoryMatchBest', String(best));
+                    bestEl.textContent = best;
+                }
+            }
+        }
+
+        function flipCard(cardElement, cardData) {
+            if (lockBoard || cardData.matched || cardElement === firstCard) return;
+
+            cardElement.classList.add('flipped');
+
+            if (!firstCard) {
+                firstCard = cardElement;
+                firstCard.dataset.symbol = cardData.symbol;
+                return;
+            }
+
+            secondCard = cardElement;
+            secondCard.dataset.symbol = cardData.symbol;
+            moves += 1;
+            updateMoves();
+
+            if (firstCard.dataset.symbol === secondCard.dataset.symbol) {
+                const firstIndex = Number(firstCard.dataset.index);
+                const secondIndex = Number(secondCard.dataset.index);
+                deck[firstIndex].matched = true;
+                deck[secondIndex].matched = true;
+                firstCard.classList.add('matched');
+                secondCard.classList.add('matched');
+                matchedPairs += 1;
+                setMessage('Nice match!');
+                resetTurn();
+                updateBest();
+
+                if (matchedPairs === symbols.length) {
+                    setMessage('You won! Press restart to play again.');
+                }
+                return;
+            }
+
+            setMessage('Try again!');
+            lockBoard = true;
+
+            setTimeout(() => {
+                firstCard.classList.remove('flipped');
+                secondCard.classList.remove('flipped');
+                resetTurn();
+                setMessage('Find all the pairs.');
+            }, 800);
+        }
+
+        function resetTurn() {
+            firstCard = null;
+            secondCard = null;
+            lockBoard = false;
+        }
+
+        function buildBoard() {
+            deck = createDeck();
+            board.innerHTML = '';
+            matchedPairs = 0;
+            moves = 0;
+            updateMoves();
+            resetTurn();
+            setMessage('Find all the pairs.');
+
+            deck.forEach((cardData, index) => {
+                const card = document.createElement('button');
+                card.className = 'card';
+                card.setAttribute('aria-label', 'Memory card');
+                card.dataset.index = index;
+                card.innerHTML = `
+                    <div class="card-inner">
+                        <div class="face front">?</div>
+                        <div class="face back">${cardData.symbol}</div>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => {
+                    const cardFace = card.querySelector('.card-inner');
+                    if (!cardFace) return;
+                    flipCard(card, cardData);
+                });
+
+                board.appendChild(card);
+            });
+        }
+
+        restartBtn.addEventListener('click', buildBoard);
+        buildBoard();
+    </script>
+</body>
+</html>

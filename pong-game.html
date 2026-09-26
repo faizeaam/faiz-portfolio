@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pong</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: #101c2d;
+      --court: #10233a;
+      --paddle: #7dd3fc;
+      --ball: #f9a8d4;
+      --text: #e5eefb;
+      --muted: #9fb5cc;
+      --accent: #fbbf24;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at top, #13233e, var(--bg) 45%);
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+    }
+
+    .app {
+      width: min(90vw, 640px);
+      padding: 20px;
+      border-radius: 22px;
+      background: rgba(16, 28, 45, 0.96);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 28px 60px rgba(0,0,0,0.35);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .title {
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .scores {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      background: rgba(125, 211, 252, 0.08);
+      border: 1px solid rgba(125, 211, 252, 0.18);
+      border-radius: 12px;
+      padding: 9px 12px;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .pill strong {
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    .game-box {
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: var(--court);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: linear-gradient(180deg, #11243b, #0d1b2a);
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(7, 17, 31, 0.45);
+      backdrop-filter: blur(2px);
+      transition: opacity 0.2s ease;
+    }
+
+    .overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .card {
+      width: min(82%, 300px);
+      background: rgba(12, 21, 35, 0.96);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      padding: 18px 16px 14px;
+      text-align: center;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 1.5rem;
+    }
+
+    .card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+
+    .start-btn {
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), #f59e0b);
+      color: #0f172a;
+      font-weight: 700;
+      padding: 12px 16px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .move-btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .move-btns button {
+      border: none;
+      background: rgba(125, 211, 252, 0.08);
+      color: var(--text);
+      border: 1px solid rgba(125, 211, 252, 0.18);
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="title">Pong</div>
+      <div class="scores">
+        <div class="pill">Player <strong id="leftScore">0</strong></div>
+        <div class="pill">CPU <strong id="rightScore">0</strong></div>
+      </div>
+    </div>
+
+    <div class="game-box">
+      <canvas id="gameCanvas" width="600" height="360" aria-label="Pong game"></canvas>
+      <div class="overlay" id="overlay">
+        <div class="card">
+          <h2 id="overlayTitle">Ready?</h2>
+          <p id="overlayText">Move with W/S or the buttons below. First to 5 wins.</p>
+          <button class="start-btn" id="startBtn">Start Game</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="move-btns">
+        <button id="upBtn">↑ Up</button>
+        <button id="downBtn">↓ Down</button>
+      </div>
+      <div class="status">W / S controls</div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const leftScoreEl = document.getElementById('leftScore');
+    const rightScoreEl = document.getElementById('rightScore');
+    const overlay = document.getElementById('overlay');
+    const overlayTitle = document.getElementById('overlayTitle');
+    const overlayText = document.getElementById('overlayText');
+    const startBtn = document.getElementById('startBtn');
+
+    const paddleHeight = 90;
+    const paddleWidth = 12;
+    const paddleSpeed = 7;
+    const ballSize = 12;
+
+    let leftPaddle;
+    let rightPaddle;
+    let ball;
+    let leftScore;
+    let rightScore;
+    let isRunning = false;
+    let lastTime = 0;
+    let animationId = null;
+    let keys = { w: false, s: false };
+
+    function resetPositions() {
+      leftPaddle = { x: 18, y: canvas.height / 2 - paddleHeight / 2, width: paddleWidth, height: paddleHeight };
+      rightPaddle = { x: canvas.width - 18 - paddleWidth, y: canvas.height / 2 - paddleHeight / 2, width: paddleWidth, height: paddleHeight };
+      ball = {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        size: ballSize,
+        vx: 5,
+        vy: 2.5
+      };
+    }
+
+    function resetScores() {
+      leftScore = 0;
+      rightScore = 0;
+      leftScoreEl.textContent = '0';
+      rightScoreEl.textContent = '0';
+    }
+
+    function startGame() {
+      resetScores();
+      resetPositions();
+      isRunning = true;
+      overlay.classList.add('hidden');
+      lastTime = 0;
+      animationId = requestAnimationFrame(gameLoop);
+    }
+
+    function endGame(winner) {
+      isRunning = false;
+      cancelAnimationFrame(animationId);
+      overlay.classList.remove('hidden');
+      overlayTitle.textContent = winner ? `${winner} wins!` : 'Game Over';
+      overlayText.textContent = 'Press start to play again.';
+      startBtn.textContent = 'Play Again';
+    }
+
+    function updatePlayerPaddle() {
+      if (keys.w) leftPaddle.y -= paddleSpeed;
+      if (keys.s) leftPaddle.y += paddleSpeed;
+      leftPaddle.y = Math.max(0, Math.min(canvas.height - leftPaddle.height, leftPaddle.y));
+    }
+
+    function updateComputerPaddle() {
+      const center = rightPaddle.y + rightPaddle.height / 2;
+      const target = ball.y - rightPaddle.height / 2;
+      if (Math.abs(ball.y - center) > 12) {
+        rightPaddle.y += (ball.y > center ? 1.5 : -1.5) * paddleSpeed;
+      }
+      rightPaddle.y = Math.max(0, Math.min(canvas.height - rightPaddle.height, rightPaddle.y));
+    }
+
+    function updateBall() {
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+
+      if (ball.y <= 0 || ball.y + ball.size >= canvas.height) {
+        ball.vy *= -1;
+      }
+
+      if (ball.x <= leftPaddle.x + leftPaddle.width && ball.y + ball.size >= leftPaddle.y && ball.y <= leftPaddle.y + leftPaddle.height) {
+        ball.x = leftPaddle.x + leftPaddle.width;
+        ball.vx = Math.abs(ball.vx) + 0.1;
+        ball.vy += (ball.y - (leftPaddle.y + leftPaddle.height / 2)) * 0.06;
+      }
+
+      if (ball.x + ball.size >= rightPaddle.x && ball.y + ball.size >= rightPaddle.y && ball.y <= rightPaddle.y + rightPaddle.height) {
+        ball.x = rightPaddle.x - ball.size;
+        ball.vx = -(Math.abs(ball.vx) + 0.1);
+        ball.vy += (ball.y - (rightPaddle.y + rightPaddle.height / 2)) * 0.06;
+      }
+
+      if (ball.x + ball.size < 0) {
+        rightScore += 1;
+        rightScoreEl.textContent = String(rightScore);
+        resetPositions();
+      }
+
+      if (ball.x > canvas.width) {
+        leftScore += 1;
+        leftScoreEl.textContent = String(leftScore);
+        resetPositions();
+      }
+
+      if (leftScore >= 5) endGame('Player');
+      if (rightScore >= 5) endGame('CPU');
+    }
+
+    function drawCourt() {
+      ctx.fillStyle = '#10233a';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.setLineDash([10, 12]);
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 0);
+      ctx.lineTo(canvas.width / 2, canvas.height);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#7dd3fc';
+      ctx.fillRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
+
+      ctx.fillStyle = '#7dd3fc';
+      ctx.fillRect(rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
+
+      ctx.fillStyle = '#f9a8d4';
+      ctx.fillRect(ball.x, ball.y, ball.size, ball.size);
+    }
+
+    function gameLoop(ts) {
+      if (!isRunning) return;
+
+      if (!lastTime) lastTime = ts;
+      const delta = ts - lastTime;
+      lastTime = ts;
+
+      updatePlayerPaddle();
+      updateComputerPaddle();
+      updateBall();
+      drawCourt();
+
+      animationId = requestAnimationFrame(gameLoop);
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'w' || event.key === 'W') keys.w = true;
+      if (event.key === 's' || event.key === 'S') keys.s = true;
+    });
+
+    document.addEventListener('keyup', (event) => {
+      if (event.key === 'w' || event.key === 'W') keys.w = false;
+      if (event.key === 's' || event.key === 'S') keys.s = false;
+    });
+
+    document.getElementById('upBtn').addEventListener('click', () => {
+      keys.w = true;
+      setTimeout(() => keys.w = false, 120);
+    });
+
+    document.getElementById('downBtn').addEventListener('click', () => {
+      keys.s = true;
+      setTimeout(() => keys.s = false, 120);
+    });
+
+    startBtn.addEventListener('click', startGame);
+
+    resetScores();
+    resetPositions();
+    drawCourt();
+  </script>
+</body>
+</html>
