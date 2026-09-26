@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Traffic Rush | Car Game</title>
+    <style>
+        :root {
+            --bg: #0b1020;
+            --panel: #121b2d;
+            --road: #1d2438;
+            --road-line: rgba(255,255,255,0.45);
+            --grass: #1d7b52;
+            --grass-dark: #14633e;
+            --player: #4dd0ff;
+            --enemy: #ff5c7a;
+            --gold: #ffd166;
+            --text: #edf5ff;
+            --muted: #a7b5cf;
+            --accent: #7ef9c6;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: radial-gradient(circle at top, #182140, var(--bg) 42%);
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--text);
+        }
+
+        .game-shell {
+            width: min(92vw, 460px);
+            background: rgba(18, 27, 45, 0.9);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 22px;
+            padding: 18px 18px 12px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+
+        .game-title {
+            font-size: 1.02rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .score-box {
+            display: flex;
+            gap: 10px;
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .score-box strong {
+            color: var(--text);
+            font-size: 0.8rem;
+        }
+
+        .game-wrap {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: linear-gradient(to bottom, #132038, #0d1328 35%, #0d1328 100%);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: linear-gradient(to bottom, #1a2540, #10192d 35%, #0e1425 100%);
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(8, 12, 20, 0.38);
+            backdrop-filter: blur(2px);
+            transition: opacity 0.2s ease;
+        }
+
+        .overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .overlay-card {
+            width: min(82%, 280px);
+            padding: 18px 16px 14px;
+            text-align: center;
+            background: rgba(14, 22, 35, 0.9);
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.26);
+        }
+
+        .overlay-card h2 {
+            margin: 0 0 10px;
+            font-size: 1.4rem;
+            letter-spacing: 0.04em;
+        }
+
+        .overlay-card p {
+            margin: 0 0 14px;
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .start-btn,
+        .control-btn {
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+
+        .start-btn {
+            padding: 12px 18px;
+            background: linear-gradient(135deg, var(--gold), #ff9f43);
+            color: #111;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .start-btn:hover,
+        .control-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.05);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .control-btn {
+            padding: 12px 10px;
+            background: rgba(126, 249, 198, 0.1);
+            color: var(--text);
+            border: 1px solid rgba(126,249,198,0.18);
+
+        }
+
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding: 0 4px;
+            color: var(--muted);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        @media (max-width: 480px) {
+            .game-shell {
+                padding: 14px 14px 10px;
+            }
+
+            .game-title {
+                font-size: 0.9rem;
+            }
+
+            .score-box {
+                font-size: 0.68rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-shell">
+        <div class="topbar">
+            <div class="game-title">Traffic Rush</div>
+            <div class="score-box">
+                <span>Score <strong id="score">0</strong></span>
+                <span>Best <strong id="best-score">0</strong></span>
+            </div>
+        </div>
+
+        <div class="game-wrap">
+            <canvas id="gameCanvas" width="420" height="620" aria-label="Car racing game"></canvas>
+            <div class="overlay" id="overlay">
+                <div class="overlay-card">
+                    <h2 id="overlay-title">Ready?</h2>
+                    <p id="overlay-text">Use arrow keys or buttons to dodge traffic and keep your car alive.</p>
+                    <button class="start-btn" id="startBtn">Start Race</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn" id="leftBtn">◀ Left</button>
+            <button class="control-btn" id="rightBtn">Right ▶</button>
+        </div>
+
+        <div class="meta">
+            <span>Arrow / A D</span>
+            <span>Move</span>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const bestScoreEl = document.getElementById('best-score');
+        const overlay = document.getElementById('overlay');
+        const overlayTitle = document.getElementById('overlay-title');
+        const overlayText = document.getElementById('overlay-text');
+        const startBtn = document.getElementById('startBtn');
+        const leftBtn = document.getElementById('leftBtn');
+        const rightBtn = document.getElementById('rightBtn');
+
+        const laneCenters = [90, 210, 330];
+        const road = { x: 50, y: 0, width: 320, height: canvas.height };
+
+        let gameStarted = false;
+        let gameOver = false;
+        let lastTime = 0;
+        let spawnTimer = 0;
+        let score = 0;
+        let bestScore = Number(localStorage.getItem('trafficRushBest')) || 0;
+
+        const player = {
+            lane: 1,
+            x: laneCenters[1],
+            y: canvas.height - 120,
+            width: 42,
+            height: 72,
+            color: '#4dd0ff'
+        };
+
+        const obstacles = [];
+        const keys = { left: false, right: false };
+
+        function resetGame() {
+            obstacles.length = 0;
+            spawnTimer = 0;
+            score = 0;
+            player.lane = 1;
+            player.x = laneCenters[1];
+            scoreEl.textContent = '0';
+            gameOver = false;
+            gameStarted = true;
+            overlay.classList.add('hidden');
+            lastTime = 0;
+        }
+
+        function setBestScore() {
+            if (score > bestScore) {
+                bestScore = score;
+                localStorage.setItem('trafficRushBest', String(bestScore));
+            }
+            bestScoreEl.textContent = String(bestScore);
+        }
+
+        function gameOverState() {
+            gameOver = true;
+            gameStarted = false;
+            overlay.classList.remove('hidden');
+            overlayTitle.textContent = 'Game Over';
+            overlayText.textContent = `You scored ${score}. Press start to race again.`;
+            startBtn.textContent = 'Play Again';
+            setBestScore();
+        }
+
+        function movePlayer(direction) {
+            if (!gameStarted || gameOver) return;
+            player.lane = Math.max(0, Math.min(2, player.lane + direction));
+            player.x = laneCenters[player.lane];
+        }
+
+        function spawnObstacle() {
+            const lane = Math.floor(Math.random() * 3);
+            const type = Math.random() > 0.5 ? 'enemy' : 'enemy';
+            obstacles.push({
+                lane,
+                x: laneCenters[lane],
+                y: -100,
+                width: 42,
+                height: 72,
+                speed: 220 + score * 2.2,
+                color: type === 'enemy' ? '#ff5c7a' : '#ffd166'
+            });
+        }
+
+        function checkCollision(a, b) {
+            return a.x - a.width / 2 < b.x + b.width / 2 &&
+                   a.x + a.width / 2 > b.x - b.width / 2 &&
+                   a.y - a.height / 2 < b.y + b.height / 2 &&
+                   a.y + a.height / 2 > b.y - b.height / 2;
+        }
+
+        function update(delta) {
+            if (!gameStarted) return;
+
+            spawnTimer += delta;
+            if (spawnTimer > 980) {
+                spawnTimer = 0;
+                spawnObstacle();
+            }
+
+            score += delta * 0.02;
+            scoreEl.textContent = Math.floor(score);
+
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                obstacles[i].y += obstacles[i].speed * delta / 1000;
+
+                if (obstacles[i].y > canvas.height + 100) {
+                    obstacles.splice(i, 1);
+                    continue;
+                }
+
+                if (checkCollision({ x: player.x, y: player.y, width: player.width, height: player.height }, obstacles[i])) {
+                    gameOverState();
+                    return;
+                }
+            }
+        }
+
+        function drawRoad() {
+            ctx.fillStyle = '#1a2536';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#1d7b52';
+            ctx.fillRect(0, 0, 50, canvas.height);
+            ctx.fillRect(canvas.width - 50, 0, 50, canvas.height);
+
+            ctx.fillStyle = '#2b3348';
+            ctx.fillRect(road.x, road.y, road.width, road.height);
+
+            for (let i = 0; i < 16; i++) {
+                const y = ((i * 80) + (performance.now() * 0.2)) % (canvas.height + 80) - 40;
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                ctx.fillRect(road.x + 150, y, 6, 28);
+                ctx.fillRect(road.x + 150, y + 55, 6, 28);
+                ctx.fillRect(road.x + 150, y + 110, 6, 28);
+            }
+        }
+
+        function drawCar(x, y, color, width, height) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            ctx.fillStyle = color;
+            ctx.fillRect(-width / 2, -height / 2, width, height);
+
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.fillRect(-width / 2 + 6, -height / 2 + 12, width - 12, 18);
+            ctx.fillStyle = '#0a1020';
+            ctx.fillRect(-width / 2 + 8, -height / 2 + 2, 8, 16);
+            ctx.fillRect(width / 2 - 16, -height / 2 + 2, 8, 16);
+            ctx.fillRect(-width / 2 + 8, height / 2 - 16, 8, 16);
+            ctx.fillRect(width / 2 - 16, height / 2 - 16, 8, 16);
+
+            ctx.restore();
+        }
+
+        function drawBackgroundParticles() {
+            for (let i = 0; i < 22; i++) {
+                const x = (i * 37 + performance.now() * 0.02) % (canvas.width + 30) - 15;
+                const y = (i * 47 + performance.now() * 0.03) % (canvas.height + 30) - 15;
+                ctx.fillStyle = 'rgba(255,255,255,0.22)';
+                ctx.fillRect(x, y, 2, 2);
+            }
+        }
+
+        function render() {
+            drawRoad();
+            drawBackgroundParticles();
+
+            for (const obstacle of obstacles) {
+                drawCar(obstacle.x, obstacle.y, obstacle.color, obstacle.width, obstacle.height);
+            }
+
+            drawCar(player.x, player.y, player.color, player.width, player.height);
+        }
+
+        function gameLoop(timestamp) {
+            const delta = Math.min(32, timestamp - (lastTime || timestamp));
+            lastTime = timestamp;
+
+            update(delta);
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft' || event.key.toLowerCase() === 'a') {
+                movePlayer(-1);
+            }
+
+            if (event.key === 'ArrowRight' || event.key.toLowerCase() === 'd') {
+                movePlayer(1);
+            }
+
+            if (event.key === ' ' && !gameStarted) {
+                resetGame();
+            }
+        });
+
+        leftBtn.addEventListener('click', () => movePlayer(-1));
+        rightBtn.addEventListener('click', () => movePlayer(1));
+
+        startBtn.addEventListener('click', () => {
+            resetGame();
+            overlayTitle.textContent = 'Ready?';
+            overlayText.textContent = 'Use arrow keys or buttons to dodge traffic and keep your car alive.';
+            startBtn.textContent = 'Start Race';
+        });
+
+        bestScoreEl.textContent = String(bestScore);
+        overlayTitle.textContent = 'Ready?';
+        overlayText.textContent = 'Use arrow keys or buttons to dodge traffic and keep your car alive.';
+        render();
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>
