@@ -88,9 +88,10 @@
         .filters select, .filters input { width: 100%; min-height: 44px; padding: 0 12px; color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 0; outline: none; font: 12px var(--display); }
         .filters select:focus, .filters input:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(35, 115, 82, .12); }
         .paper-list { margin-top: 16px; border-top: 1px solid var(--line); }
-        .paper-row { display: grid; grid-template-columns: minmax(0, 1fr) 130px 100px auto; gap: 18px; align-items: center; min-height: 61px; border-bottom: 1px solid var(--line); }
+        .paper-row { display: grid; grid-template-columns: minmax(0, 1fr) 130px 100px minmax(120px, 220px); gap: 18px; align-items: center; min-height: 61px; border-bottom: 1px solid var(--line); }
         .paper-name { font-size: 13px; font-weight: 600; }
         .paper-code, .paper-date { color: var(--muted); font: 10px var(--mono); }
+        .paper-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
         .paper-link { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 12px; color: var(--white); background: var(--ink); font: 10px var(--mono); text-decoration: none; }
         .paper-link:hover { background: var(--green); }
         .empty { padding: 26px 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
@@ -163,6 +164,16 @@
                 <article class="subject"><span class="subject-code">BEVAE-181</span><h3>Environmental Studies</h3><p>Available official papers are listed below by exam session.</p><a href="#papers" data-course="BEVAE-181">View papers ↓</a></article>
                 <article class="subject"><span class="subject-code">BEGLA-136</span><h3>English at Work Place</h3><p>Available official papers are listed below by exam session.</p><a href="#papers" data-course="BEGLA-136">View papers ↓</a></article>
                 <article class="subject"><span class="subject-code">FEG-02 · LEGACY FEG-2</span><h3>Foundation Course in English-2</h3><p>Older official papers are listed below under FEG-2.</p><a href="#papers" data-course="FEG-02">View papers ↓</a></article>
+            </div>
+        </section>
+        <section class="paper-section" aria-labelledby="books-title">
+            <div class="section-title"><h2 id="books-title">Books & study PDFs</h2><p>Semester 1 official course material</p></div>
+            <div class="paper-list">
+                <article class="paper-row"><span class="paper-name">BCS-111 / BCS-011 · Computer Basics and PC Software</span><span class="paper-code">Course Book</span><span class="paper-date">Semester 1</span><div class="paper-links"><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BCS-111" target="_blank" rel="noopener noreferrer">PDF 1 ↗</a><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BCS-111+computer+basics+and+pc+software" target="_blank" rel="noopener noreferrer">PDF 2 ↗</a></div></article>
+                <article class="paper-row"><span class="paper-name">BCS-012 · Basic Mathematics</span><span class="paper-code">Course Book</span><span class="paper-date">Semester 1</span><div class="paper-links"><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BCS-012" target="_blank" rel="noopener noreferrer">PDF 1 ↗</a><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BCS-012+mathematics+pdf" target="_blank" rel="noopener noreferrer">PDF 2 ↗</a></div></article>
+                <article class="paper-row"><span class="paper-name">BCSL-013 · Computer Basics and PC Software Lab</span><span class="paper-code">Lab Manual</span><span class="paper-date">Semester 1</span><div class="paper-links"><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BCSL-013" target="_blank" rel="noopener noreferrer">PDF 1 ↗</a><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BCSL-013+practical+manual" target="_blank" rel="noopener noreferrer">PDF 2 ↗</a></div></article>
+                <article class="paper-row"><span class="paper-name">BEGLA-136 · English at Work Place</span><span class="paper-code">Course Book</span><span class="paper-date">Semester 1</span><div class="paper-links"><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BEGLA-136" target="_blank" rel="noopener noreferrer">PDF 1 ↗</a><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BEGLA-136+english+at+the+workplace" target="_blank" rel="noopener noreferrer">PDF 2 ↗</a></div></article>
+                <article class="paper-row"><span class="paper-name">BEVAE-181 · Environmental Studies</span><span class="paper-code">Course Book</span><span class="paper-date">Semester 1</span><div class="paper-links"><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BEVAE-181" target="_blank" rel="noopener noreferrer">PDF 1 ↗</a><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BEVAE-181+environmental+studies+pdf" target="_blank" rel="noopener noreferrer">PDF 2 ↗</a></div></article>
             </div>
         </section>
         <section class="paper-section" aria-labelledby="assignments-title">
