@@ -55,6 +55,34 @@
         .subject p { min-height: 32px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
         .subject a { display: inline-flex; margin-top: 14px; color: var(--green); font: 10px var(--mono); text-decoration-thickness: 1px; text-underline-offset: 4px; }
         .paper-section { margin-top: 54px; scroll-margin-top: 20px; }
+        .planner-tools { display: grid; grid-template-columns: .72fr 1.28fr; border: 1px solid var(--line); background: rgba(255, 254, 250, .58); }
+        .deadline-panel { padding: 23px; color: var(--white); background: var(--ink); }
+        .deadline-label { margin: 0; color: var(--lime); font: 10px var(--mono); text-transform: uppercase; }
+        .deadline-count { display: block; margin: 22px 0 5px; font-size: 42px; line-height: 1; font-weight: 600; }
+        .deadline-date { margin: 0; color: rgba(255, 254, 250, .75); font: 11px var(--mono); }
+        .deadline-copy { margin: 19px 0 0; color: rgba(255, 254, 250, .75); font-size: 12px; line-height: 1.5; }
+        .planner-content { min-width: 0; padding: 20px; }
+        .planner-form { display: grid; grid-template-columns: minmax(0, 1fr) 155px 135px auto; gap: 8px; align-items: end; }
+        .planner-field { display: grid; gap: 6px; color: var(--muted); font: 9px var(--mono); text-transform: uppercase; }
+        .planner-field input, .planner-field select { width: 100%; min-width: 0; min-height: 42px; padding: 0 10px; color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 0; outline: none; font: 12px var(--display); }
+        .planner-field input:focus, .planner-field select:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(35, 115, 82, .12); }
+        .planner-add { min-height: 42px; padding: 0 13px; border: 0; cursor: pointer; }
+        .planner-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 19px; }
+        .planner-filters { display: inline-flex; border: 1px solid var(--line); }
+        .planner-filter { min-height: 32px; padding: 0 11px; color: var(--muted); background: transparent; border: 0; cursor: pointer; font: 9px var(--mono); }
+        .planner-filter + .planner-filter { border-left: 1px solid var(--line); }
+        .planner-filter[aria-pressed="true"] { color: var(--white); background: var(--green); }
+        .planner-summary { color: var(--muted); font: 9px var(--mono); text-align: right; }
+        .planner-list { margin-top: 9px; border-top: 1px solid var(--line); }
+        .planner-task { display: grid; grid-template-columns: 20px minmax(0, 1fr) 30px; gap: 10px; align-items: center; min-height: 54px; border-bottom: 1px solid var(--line); }
+        .planner-task input { width: 17px; height: 17px; margin: 0; accent-color: var(--green); }
+        .planner-task-copy { min-width: 0; }
+        .planner-task-copy strong { display: block; overflow-wrap: anywhere; font-size: 12px; font-weight: 600; }
+        .planner-task-copy span { display: block; margin-top: 3px; color: var(--muted); font: 9px var(--mono); }
+        .planner-task.done strong { color: var(--muted); text-decoration: line-through; }
+        .planner-delete { width: 30px; height: 30px; border: 0; color: var(--muted); background: transparent; cursor: pointer; font-size: 18px; }
+        .planner-delete:hover { color: var(--coral); }
+        .planner-empty { padding: 20px 0; color: var(--muted); font-size: 12px; }
         .filters { display: grid; grid-template-columns: 1.1fr 1fr .8fr; gap: 10px; margin: 20px 0 0; }
         .filters label { display: grid; gap: 7px; color: var(--muted); font: 9px var(--mono); text-transform: uppercase; }
         .filters select, .filters input { width: 100%; min-height: 44px; padding: 0 12px; color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 0; outline: none; font: 12px var(--display); }
@@ -76,6 +104,11 @@
             .intro { grid-template-columns: 1fr; gap: 18px; }
             h1 { font-size: 46px; }
             .intro-copy { max-width: 500px; }
+            .planner-tools { grid-template-columns: 1fr; }
+            .deadline-count { margin-top: 15px; }
+            .deadline-copy { margin-top: 10px; }
+            .planner-form { grid-template-columns: minmax(0, 1fr) minmax(125px, .7fr); }
+            .planner-add { grid-column: 1 / -1; }
             .subjects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .filters { grid-template-columns: 1fr 1fr; }
             .filters label:last-child { grid-column: 1 / -1; }
@@ -96,6 +129,9 @@
             .metric span { font-size: 8px; }
             .section-title { display: block; }
             .section-title p { margin-top: 7px; }
+            .planner-content, .deadline-panel { padding: 16px; }
+            .planner-form { grid-template-columns: 1fr; }
+            .planner-add { grid-column: auto; }
             .filters { grid-template-columns: 1fr; }
             .filters label:last-child { grid-column: auto; }
         }
@@ -138,6 +174,34 @@
                 <article class="paper-row"><span class="paper-name">Computer Basics and PC Software Lab</span><span class="paper-code">BCSL-013 · BCA_NEW</span><span class="paper-date">Jul 2026 / Jan 2027</span><a class="paper-link" href="https://www.ignou.ac.in/viewFile/SOCIS/assignments/BCSL-013-BCA-NEW-2026-27.pdf" target="_blank" rel="noopener noreferrer">Download PDF ↗</a></article>
                 <article class="paper-row"><span class="paper-name">English at Work Place</span><span class="paper-code">BEGLA-136 · BCA_NEW</span><span class="paper-date">Jul 2026 / Jan 2027</span><a class="paper-link" href="https://www.ignou.ac.in/viewFile/SOCIS/assignments/BEGLA-136-BCA-NEW-2026-27.pdf" target="_blank" rel="noopener noreferrer">Download PDF ↗</a></article>
                 <article class="paper-row"><span class="paper-name">Environmental Studies</span><span class="paper-code">BEVAE-181 · BCA_NEW</span><span class="paper-date">Jul 2026 / Jan 2027</span><a class="paper-link" href="https://www.ignou.ac.in/viewFile/SOCIS/assignments/BEVAE-181-BCA-NEW-2026-27.pdf" target="_blank" rel="noopener noreferrer">Download PDF ↗</a></article>
+            </div>
+        </section>
+        <section class="paper-section" aria-labelledby="planner-title">
+            <div class="section-title"><h2 id="planner-title">Study Planner</h2><p>Tasks save only in this browser</p></div>
+            <div class="planner-tools">
+                <aside class="deadline-panel" aria-live="polite">
+                    <p class="deadline-label">Next assignment due</p>
+                    <strong class="deadline-count" id="deadline-count">--</strong>
+                    <p class="deadline-date" id="deadline-date"></p>
+                    <p class="deadline-copy" id="deadline-copy"></p>
+                </aside>
+                <div class="planner-content">
+                    <form class="planner-form" id="planner-form">
+                        <label class="planner-field" for="planner-title-input">Study task<input id="planner-title-input" type="text" maxlength="100" placeholder="e.g. Revise basic mathematics" required></label>
+                        <label class="planner-field" for="planner-subject-input">Subject<select id="planner-subject-input"><option>BCS-111</option><option>BCS-012</option><option>BCSL-013</option><option>BEVAE-181</option><option>BEGLA-136</option><option>FEG-02</option></select></label>
+                        <label class="planner-field" for="planner-date-input">Target date<input id="planner-date-input" type="date"></label>
+                        <button class="paper-link planner-add" type="submit">Add task +</button>
+                    </form>
+                    <div class="planner-toolbar">
+                        <div class="planner-filters" role="group" aria-label="Filter study tasks">
+                            <button class="planner-filter" type="button" data-task-filter="all" aria-pressed="true">All</button>
+                            <button class="planner-filter" type="button" data-task-filter="open" aria-pressed="false">Open</button>
+                            <button class="planner-filter" type="button" data-task-filter="done" aria-pressed="false">Done</button>
+                        </div>
+                        <span class="planner-summary" id="planner-summary" aria-live="polite"></span>
+                    </div>
+                    <div class="planner-list" id="planner-list" aria-live="polite"></div>
+                </div>
             </div>
         </section>
         <section class="paper-section" id="papers" aria-labelledby="papers-title">
@@ -291,6 +355,135 @@
         const searchFilter = document.querySelector("#search-filter");
         const paperList = document.querySelector("#paper-list");
         const resultSummary = document.querySelector("#result-summary");
+        const plannerKey = "study-lab-tasks-v1";
+        const plannerForm = document.querySelector("#planner-form");
+        const plannerTitleInput = document.querySelector("#planner-title-input");
+        const plannerSubjectInput = document.querySelector("#planner-subject-input");
+        const plannerDateInput = document.querySelector("#planner-date-input");
+        const plannerList = document.querySelector("#planner-list");
+        const plannerSummary = document.querySelector("#planner-summary");
+        const taskFilters = document.querySelectorAll("[data-task-filter]");
+        let activeTaskFilter = "all";
+        let plannerTasks = [];
+
+        try {
+            const savedTasks = JSON.parse(localStorage.getItem(plannerKey) || "[]");
+            plannerTasks = Array.isArray(savedTasks) ? savedTasks.filter(task => task && typeof task.title === "string") : [];
+        } catch {
+            plannerTasks = [];
+        }
+
+        function savePlannerTasks() {
+            localStorage.setItem(plannerKey, JSON.stringify(plannerTasks));
+        }
+
+        function renderPlannerTasks() {
+            const visibleTasks = plannerTasks.filter(task => activeTaskFilter === "all" || (activeTaskFilter === "done" ? task.done : !task.done));
+            const completedCount = plannerTasks.filter(task => task.done).length;
+            plannerSummary.textContent = `${plannerTasks.length - completedCount} open · ${completedCount} done`;
+            plannerList.replaceChildren();
+
+            if (!visibleTasks.length) {
+                const emptyMessage = document.createElement("p");
+                emptyMessage.className = "planner-empty";
+                emptyMessage.textContent = plannerTasks.length ? "No tasks in this view." : "Add a study task to get started.";
+                plannerList.append(emptyMessage);
+                return;
+            }
+
+            visibleTasks.forEach(task => {
+                const row = document.createElement("article");
+                row.className = `planner-task${task.done ? " done" : ""}`;
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.checked = Boolean(task.done);
+                checkbox.dataset.taskAction = "toggle";
+                checkbox.dataset.taskId = task.id;
+                checkbox.setAttribute("aria-label", `Mark ${task.title} complete`);
+                const copy = document.createElement("div");
+                copy.className = "planner-task-copy";
+                const title = document.createElement("strong");
+                title.textContent = task.title;
+                const meta = document.createElement("span");
+                const targetDate = task.dueDate ? new Date(`${task.dueDate}T00:00:00`).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : "No target date";
+                meta.textContent = `${task.subject} · ${targetDate}`;
+                copy.append(title, meta);
+                const deleteButton = document.createElement("button");
+                deleteButton.type = "button";
+                deleteButton.className = "planner-delete";
+                deleteButton.dataset.taskAction = "delete";
+                deleteButton.dataset.taskId = task.id;
+                deleteButton.setAttribute("aria-label", `Delete ${task.title}`);
+                deleteButton.textContent = "×";
+                row.append(checkbox, copy, deleteButton);
+                plannerList.append(row);
+            });
+        }
+
+        function updateDeadlineCountdown() {
+            const deadlines = [
+                { date: "2026-10-31", label: "December 2026 TEE assignment submission" },
+                { date: "2027-04-30", label: "June 2027 TEE assignment submission" }
+            ];
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const nextDeadline = deadlines.find(deadline => new Date(`${deadline.date}T00:00:00`) >= today);
+            const count = document.querySelector("#deadline-count");
+            const date = document.querySelector("#deadline-date");
+            const copy = document.querySelector("#deadline-copy");
+
+            if (!nextDeadline) {
+                count.textContent = "Done";
+                date.textContent = "No upcoming date listed";
+                copy.textContent = "Check IGNOU for the next assignment schedule.";
+                return;
+            }
+
+            const deadlineDate = new Date(`${nextDeadline.date}T00:00:00`);
+            const daysLeft = Math.ceil((deadlineDate - today) / 86400000);
+            count.textContent = daysLeft === 0 ? "Today" : `${daysLeft} days`;
+            date.textContent = deadlineDate.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+            copy.textContent = nextDeadline.label;
+        }
+
+        plannerForm.addEventListener("submit", event => {
+            event.preventDefault();
+            plannerTasks.unshift({
+                id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+                title: plannerTitleInput.value.trim(),
+                subject: plannerSubjectInput.value,
+                dueDate: plannerDateInput.value,
+                done: false
+            });
+            savePlannerTasks();
+            plannerForm.reset();
+            renderPlannerTasks();
+            plannerTitleInput.focus();
+        });
+
+        plannerList.addEventListener("change", event => {
+            const checkbox = event.target.closest('[data-task-action="toggle"]');
+            if (!checkbox) return;
+            const task = plannerTasks.find(item => item.id === checkbox.dataset.taskId);
+            if (!task) return;
+            task.done = checkbox.checked;
+            savePlannerTasks();
+            renderPlannerTasks();
+        });
+
+        plannerList.addEventListener("click", event => {
+            const button = event.target.closest('[data-task-action="delete"]');
+            if (!button) return;
+            plannerTasks = plannerTasks.filter(task => task.id !== button.dataset.taskId);
+            savePlannerTasks();
+            renderPlannerTasks();
+        });
+
+        taskFilters.forEach(button => button.addEventListener("click", () => {
+            activeTaskFilter = button.dataset.taskFilter;
+            taskFilters.forEach(filter => filter.setAttribute("aria-pressed", String(filter === button)));
+            renderPlannerTasks();
+        }));
 
         for (let year = 2026; year >= 2016; year -= 1) {
             const option = document.createElement("option");
@@ -320,6 +513,8 @@
         searchFilter.addEventListener("input", renderPapers);
         document.querySelector("#paper-count").textContent = papers.length;
         renderPapers();
+        renderPlannerTasks();
+        updateDeadlineCountdown();
     </script>
 </body>
 </html>
