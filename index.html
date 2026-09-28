@@ -53,10 +53,14 @@
         h1 { max-width: 620px; margin: 0; font-size: clamp(52px, 7vw, 94px); line-height: .94; letter-spacing: -.075em; font-weight: 600; }
         h1 em { color: var(--coral); font-style: normal; }
         .intro { max-width: 475px; margin: 30px 0 38px; color: var(--muted); font-size: 17px; line-height: 1.65; }
-        .actions { display: flex; align-items: center; gap: 24px; }
+        .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
         .button { display: inline-flex; align-items: center; gap: 20px; padding: 15px 18px 15px 21px; background: var(--ink); color: var(--cream); font-weight: 600; font-size: 14px; transition: transform .2s ease, background .2s ease; }
         .button span { display: grid; place-items: center; width: 25px; height: 25px; background: var(--lime); color: var(--ink); border-radius: 50%; font-size: 18px; line-height: 1; }
         .button:hover { background: var(--coral); transform: translateY(-3px); }
+        .study-button { min-height: 58px; padding: 16px 23px; gap: 24px; background: var(--lime); color: var(--ink); font-size: 16px; box-shadow: 5px 5px 0 var(--coral); }
+        .study-button span { width: 28px; height: 28px; background: var(--ink); color: var(--lime); }
+        .study-button:hover { background: var(--coral); color: var(--cream); }
+        .study-button:hover span { background: var(--cream); color: var(--ink); }
         .text-link { font-family: var(--mono); font-size: 12px; border-bottom: 1px solid var(--ink); padding-bottom: 5px; }
         .hero-art { position: relative; min-height: 430px; display: grid; place-items: center; }
         .portrait-frame { width: min(100%, 400px); aspect-ratio: 4 / 5; position: relative; overflow: hidden; background: #d7ddd7; transform: rotate(3deg); border: 10px solid var(--cream); box-shadow: 16px 20px 0 var(--lime); }
@@ -162,6 +166,7 @@
                 <h1>Building clean, useful <em>web experiences.</em></h1>
                 <p class="intro">I’m Faiz E Aam Ansari, an IGNOU BCA student focused on frontend development, responsive design, and building practical products that solve real problems.</p>
                 <div class="actions">
+                    <a class="button study-button" href="study-lab.html">Study Lab <span>↗</span></a>
                     <a class="button" href="#work">View projects <span>↘</span></a>
                     <a class="button" href="https://github.com/faizeaam" target="_blank" rel="noreferrer" style="background: transparent; border: 1px solid var(--line); color: var(--ink);">GitHub <span>↗</span></a>
                     <a class="button" href="README.md" style="background: transparent; border: 1px solid var(--line); color: var(--ink);">View all projects <span>↗</span></a>
