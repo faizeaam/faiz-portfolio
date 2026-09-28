@@ -84,11 +84,13 @@
         .planner-delete:hover { color: var(--coral); }
         .planner-empty { padding: 20px 0; color: var(--muted); font-size: 12px; }
         .filters { display: grid; grid-template-columns: 1.1fr 1fr .8fr; gap: 10px; margin: 20px 0 0; }
+        .book-filters { grid-template-columns: 1.1fr .7fr .7fr 1fr; }
         .filters label { display: grid; gap: 7px; color: var(--muted); font: 9px var(--mono); text-transform: uppercase; }
         .filters select, .filters input { width: 100%; min-height: 44px; padding: 0 12px; color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 0; outline: none; font: 12px var(--display); }
         .filters select:focus, .filters input:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(35, 115, 82, .12); }
         .paper-list { margin-top: 16px; border-top: 1px solid var(--line); }
         .paper-row { display: grid; grid-template-columns: minmax(0, 1fr) 130px 100px minmax(120px, 220px); gap: 18px; align-items: center; min-height: 61px; border-bottom: 1px solid var(--line); }
+        .paper-row[hidden] { display: none; }
         .paper-name { font-size: 13px; font-weight: 600; }
         .paper-code, .paper-date { color: var(--muted); font: 10px var(--mono); }
         .paper-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
@@ -167,8 +169,14 @@
             </div>
         </section>
         <section class="paper-section" aria-labelledby="books-title">
-            <div class="section-title"><h2 id="books-title">Books & study PDFs</h2><p>Semester 1 official course material</p></div>
-            <div class="paper-list">
+            <div class="section-title"><h2 id="books-title">Books & study PDFs</h2><p id="book-result-summary" aria-live="polite"></p></div>
+            <div class="filters book-filters">
+                <label for="book-subject-filter">Subject code<select id="book-subject-filter"><option value="">All subjects</option></select></label>
+                <label for="book-block-filter">Block<select id="book-block-filter"><option value="">All blocks</option></select></label>
+                <label for="book-unit-filter">Unit<select id="book-unit-filter"><option value="">All units</option></select></label>
+                <label for="book-search-filter">Search<input id="book-search-filter" type="search" placeholder="Code, title or unit"></label>
+            </div>
+            <div class="paper-list" id="book-list">
                 <article class="paper-row"><span class="paper-name">BCS-111 · Block-1 · Unit-1 · Computer: Origin and Applications</span><span class="paper-code">Computer Basics</span><span class="paper-date">Semester 1</span><div class="paper-links"><a class="paper-link" href="https://egyankosh.ac.in/bitstream/123456789/10950/1/Unit-1.pdf" target="_blank" rel="noopener noreferrer">Open PDF ↗</a></div></article>
                 <article class="paper-row"><span class="paper-name">BCS-111 · Block-1 · Unit-2 · Functioning of a Computer</span><span class="paper-code">Computer Basics</span><span class="paper-date">Semester 1</span><div class="paper-links"><a class="paper-link" href="https://egyankosh.ac.in/bitstream/123456789/10954/1/Unit-2.pdf" target="_blank" rel="noopener noreferrer">Open PDF ↗</a></div></article>
                 <article class="paper-row"><span class="paper-name">BCS-111 · Block-1 · Unit-3 · Memory System</span><span class="paper-code">Computer Basics</span><span class="paper-date">Semester 1</span><div class="paper-links"><a class="paper-link" href="https://egyankosh.ac.in/bitstream/123456789/10955/1/Unit-3.pdf" target="_blank" rel="noopener noreferrer">Open PDF ↗</a></div></article>
@@ -245,6 +253,7 @@
                 <article class="paper-row"><span class="paper-name">BEGLA-136 · English at Work Place</span><span class="paper-code">Course Book</span><span class="paper-date">Semester 1</span><div class="paper-links"><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BEGLA-136" target="_blank" rel="noopener noreferrer">PDF 1 ↗</a><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BEGLA-136+english+at+the+workplace" target="_blank" rel="noopener noreferrer">PDF 2 ↗</a></div></article>
                 <article class="paper-row"><span class="paper-name">BEVAE-181 · Environmental Studies</span><span class="paper-code">Course Book</span><span class="paper-date">Semester 1</span><div class="paper-links"><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BEVAE-181" target="_blank" rel="noopener noreferrer">PDF 1 ↗</a><a class="paper-link" href="https://egyankosh.ac.in/simple-search?query=BEVAE-181+environmental+studies+pdf" target="_blank" rel="noopener noreferrer">PDF 2 ↗</a></div></article>
             </div>
+            <p class="empty" id="book-empty" hidden>No study PDFs match these filters.</p>
         </section>
         <section class="paper-section" aria-labelledby="assignments-title">
             <div class="section-title"><h2 id="assignments-title">Assignments</h2><p>July 2026 / January 2027 session</p></div>
@@ -584,6 +593,71 @@
             resultSummary.textContent = `${visiblePapers.length} ${visiblePapers.length === 1 ? "paper" : "papers"}`;
             paperList.innerHTML = visiblePapers.length ? visiblePapers.map(paper => `<article class="paper-row"><span class="paper-name">${paper.name}</span><span class="paper-code">${paper.code}${paper.legacy ? " · legacy" : ""}</span><span class="paper-date">${paper.term} ${paper.year}</span><a class="paper-link" href="${paper.url}" target="_blank" rel="noopener noreferrer">Open PDF ↗</a></article>`).join("") : `<p class="empty">No verified direct PDFs match these filters. Check the <a href="${archiveRoot}" target="_blank" rel="noreferrer">official IGNOU archive</a> for other Semester 1 subjects and newer sessions.</p>`;
         }
+
+        const bookList = document.querySelector("#book-list");
+        const bookRecords = [...bookList.querySelectorAll(".paper-row")].map(row => {
+            const name = row.querySelector(".paper-name").textContent;
+            return {
+                row,
+                subject: name.match(/^(BCS-111|BCS-012|BCSL-013|BEVAE-181|BEGLA-136)\b/)?.[1] || "",
+                block: name.match(/\bBlock-(\d+)\b/i)?.[1] || "",
+                unit: name.match(/\bUnit-(\d+)\b/i)?.[1] || "",
+                searchText: row.textContent.toLowerCase()
+            };
+        });
+        const bookSubjectFilter = document.querySelector("#book-subject-filter");
+        const bookBlockFilter = document.querySelector("#book-block-filter");
+        const bookUnitFilter = document.querySelector("#book-unit-filter");
+        const bookSearchFilter = document.querySelector("#book-search-filter");
+        const bookResultSummary = document.querySelector("#book-result-summary");
+        const bookEmpty = document.querySelector("#book-empty");
+        const bookSubjectNames = {
+            "BCS-111": "Computer Basics",
+            "BCS-012": "Basic Mathematics",
+            "BCSL-013": "Computer Basics Lab",
+            "BEVAE-181": "Environmental Studies",
+            "BEGLA-136": "English at Work Place"
+        };
+
+        function populateBookFilter(select, values, allLabel, formatLabel = value => value) {
+            const allOption = document.createElement("option");
+            allOption.value = "";
+            allOption.textContent = allLabel;
+            select.replaceChildren(allOption);
+            [...new Set(values.filter(Boolean))]
+                .sort((left, right) => Number(left) - Number(right) || left.localeCompare(right))
+                .forEach(value => {
+                    const option = document.createElement("option");
+                    option.value = value;
+                    option.textContent = formatLabel(value);
+                    select.append(option);
+                });
+        }
+
+        populateBookFilter(bookSubjectFilter, bookRecords.map(record => record.subject), "All subjects", subject => `${subject} · ${bookSubjectNames[subject] || ""}`);
+        populateBookFilter(bookBlockFilter, bookRecords.map(record => record.block), "All blocks", block => `Block-${block}`);
+        populateBookFilter(bookUnitFilter, bookRecords.map(record => record.unit), "All units", unit => `Unit-${unit}`);
+
+        function renderBooks() {
+            const search = bookSearchFilter.value.trim().toLowerCase();
+            let visibleCount = 0;
+            bookRecords.forEach(record => {
+                const matchesSubject = !bookSubjectFilter.value || record.subject === bookSubjectFilter.value;
+                const matchesBlock = !bookBlockFilter.value || record.block === bookBlockFilter.value;
+                const matchesUnit = !bookUnitFilter.value || record.unit === bookUnitFilter.value;
+                const matchesSearch = !search || record.searchText.includes(search);
+                record.row.hidden = !(matchesSubject && matchesBlock && matchesUnit && matchesSearch);
+                if (!record.row.hidden) visibleCount += 1;
+            });
+            bookResultSummary.textContent = `${visibleCount} ${visibleCount === 1 ? "entry" : "entries"}`;
+            bookEmpty.hidden = visibleCount > 0;
+        }
+
+        bookSubjectFilter.addEventListener("change", renderBooks);
+        bookBlockFilter.addEventListener("change", renderBooks);
+        bookUnitFilter.addEventListener("change", renderBooks);
+        bookSearchFilter.addEventListener("input", renderBooks);
+        renderBooks();
 
         document.querySelectorAll("[data-course]").forEach(link => link.addEventListener("click", () => {
             subjectFilter.value = link.dataset.course;
