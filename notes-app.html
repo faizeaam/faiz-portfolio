@@ -166,11 +166,14 @@
         notes.forEach((note) => {
           const div = document.createElement('div');
           div.className = 'note';
-          div.innerHTML = `
-            <h3>${note.title || 'Untitled'}</h3>
-            <p>${note.content}</p>
-            <button data-id="${note.id}">Delete</button>
-          `;
+          const title = document.createElement('h3');
+          title.textContent = note.title || 'Untitled';
+          const content = document.createElement('p');
+          content.textContent = note.content;
+          const deleteButton = document.createElement('button');
+          deleteButton.dataset.id = note.id;
+          deleteButton.textContent = 'Delete';
+          div.append(title, content, deleteButton);
           notesEl.appendChild(div);
         });
       }
