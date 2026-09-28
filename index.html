@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Faiz E Aam Ansari">
-    <meta name="description" content="Faiz E Aam Ansari's frontend developer portfolio featuring Student Task Manager and Weather Dashboard projects.">
+    <meta name="description" content="Faiz E Aam Ansari's portfolio of responsive frontend projects, browser games, and IGNOU study tools.">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="Faiz E Aam Ansari | Frontend Developer Portfolio">
-    <meta property="og:description" content="Explore frontend projects built by Faiz E Aam Ansari while learning full-stack development.">
+    <meta property="og:description" content="Explore responsive web apps, browser games, and study tools built by Faiz E Aam Ansari.">
     <meta property="og:type" content="website">
     <title>Faiz E Aam Ansari | Frontend Developer Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,6 +36,7 @@
             overflow-x: hidden;
         }
         a { color: inherit; text-decoration: none; }
+        a:focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
         .shell { width: min(1180px, calc(100% - 64px)); margin: auto; }
         header { padding: 28px 0; border-bottom: 1px solid var(--line); }
         nav { display: flex; align-items: center; justify-content: space-between; }
@@ -120,7 +121,9 @@
         @media (max-width: 760px) {
             .shell { width: min(100% - 40px, 560px); }
             header { padding: 20px 0; }
-            .nav-links { display: none; }
+            nav { flex-wrap: wrap; row-gap: 16px; }
+            .nav-links { order: 3; display: flex; width: 100%; gap: 20px; overflow-x: auto; padding: 14px 0 2px; border-top: 1px solid var(--line); white-space: nowrap; scrollbar-width: none; }
+            .nav-links::-webkit-scrollbar { display: none; }
             .availability { font-size: 9px; }
             .hero { min-height: auto; grid-template-columns: 1fr; gap: 38px; padding: 66px 0 80px; }
             .actions { flex-wrap: wrap; gap: 14px; }
@@ -162,14 +165,13 @@
     <main id="top">
         <section class="shell hero" id="intro">
             <div>
-                <div class="eyebrow">Frontend developer • learner</div>
-                <h1>Building clean, useful <em>web experiences.</em></h1>
-                <p class="intro">I’m Faiz E Aam Ansari, an IGNOU BCA student focused on frontend development, responsive design, and building practical products that solve real problems.</p>
+                <div class="eyebrow">IGNOU BCA · Frontend development</div>
+                <h1>Faiz E Aam <em>Ansari.</em></h1>
+                <p class="intro">I’m an IGNOU BCA student building responsive web apps, practical study tools, and browser games with HTML, CSS, and JavaScript.</p>
                 <div class="actions">
                     <a class="button study-button" href="study-lab.html">Study Lab <span>↗</span></a>
                     <a class="button" href="#work">View projects <span>↘</span></a>
                     <a class="button" href="https://github.com/faizeaam" target="_blank" rel="noreferrer" style="background: transparent; border: 1px solid var(--line); color: var(--ink);">GitHub <span>↗</span></a>
-                    <a class="button" href="README.md" style="background: transparent; border: 1px solid var(--line); color: var(--ink);">View all projects <span>↗</span></a>
                     <a class="text-link" href="#contact">Let’s connect</a>
                 </div>
             </div>
@@ -184,25 +186,25 @@
 
         <section class="shell section" id="work">
             <div class="section-heading"><h2>Selected work <em>& projects.</em></h2><p>Practical mini-projects that strengthen my frontend skills, problem-solving, and product thinking.</p></div>
-            <div style="display: flex; justify-content: flex-end; margin: -10px 0 26px;"><a class="button" href="README.md" style="background: var(--ink); color: var(--cream);">View all projects <span>↗</span></a></div>
+            <div style="display: flex; justify-content: flex-end; margin: -10px 0 26px;"><a class="button" href="https://github.com/faizeaam/faiz-portfolio#projects" target="_blank" rel="noreferrer" style="background: var(--ink); color: var(--cream);">View all projects <span>↗</span></a></div>
             <div class="projects">
-                <article class="project"><img class="project-image" src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1000&q=100" alt="A colorful digital task management interface"><div class="project-top"><span class="project-number">01 / productivity</span><span>2026</span></div><div class="project-content"><h3>Student Task Manager</h3><p>A responsive study planner for adding, completing, filtering, and saving daily tasks in the browser.</p><div class="project-links"><a href="student-task-manager.html">View project ↗</a><a href="#about">Tech stack ↗</a></div></div></article>
-                <article class="project" style="background: var(--lime);"><div class="project-top"><span class="project-number" style="color:var(--coral)">02 / live data</span><span>2026</span></div><div class="project-content"><h3>Weather Dashboard</h3><p>A live city weather app using fetch, geocoding, current conditions, and a five-day forecast.</p><div class="project-links"><a href="weather-app.html">View project ↗</a><a href="#about">Tech stack ↗</a></div></div></article>
-                <article class="project" style="background: var(--coral); color: var(--cream);"><div class="project-top"><span class="project-number" style="color:var(--lime)">03 / finance</span><span>2026</span></div><div class="project-content"><h3>Paisa Expense Tracker</h3><p>A private finance dashboard for recording income, expenses, categories, and current balance with local storage.</p><div class="project-links"><a href="expense-tracker.html">View project ↗</a><a href="#about">Tech stack ↗</a></div></div></article>
-                <article class="project" style="background: #9ed7e5;"><div class="project-top"><span class="project-number" style="color:var(--coral)">04 / maps</span><span>2026</span></div><div class="project-content"><h3>LocateMe</h3><p>A privacy-first location demo that uses browser permission to show your own position on an interactive map.</p><div class="project-links"><a href="locateme.html">View project ↗</a><a href="#about">Tech stack ↗</a></div></div></article>
-                <article class="project" style="background: #7367f0; color: var(--cream);"><div class="project-top"><span class="project-number" style="color:var(--lime)">05 / learning</span><span>2026</span></div><div class="project-content"><h3>CodeSprint Quiz</h3><p>An interactive frontend knowledge quiz with instant feedback, progress tracking, scoring, and restart flow.</p><div class="project-links"><a href="quiz-app.html">View project ↗</a><a href="#about">Tech stack ↗</a></div></div></article>
-                <article class="project" style="background: #a8e3c1;"><div class="project-top"><span class="project-number" style="color:var(--coral)">06 / capstone</span><span>2026</span></div><div class="project-content"><h3>StudyHub Dashboard</h3><p>A student productivity workspace combining tasks, notes, a Pomodoro focus timer, and progress tracking.</p><div class="project-links"><a href="studyhub.html">View project ↗</a><a href="#about">Tech stack ↗</a></div></div></article>
-                <article class="project" style="background: #111827; color: var(--cream);"><div class="project-top"><span class="project-number" style="color:var(--accent)">07 / gaming</span><span>2026</span></div><div class="project-content"><h3>Traffic Rush</h3><p>A browser car dodging game built with canvas, keyboard controls, score tracking, and local best-score saving.</p><div class="project-links"><a href="car-game.html">View project ↗</a><a href="#about">Tech stack ↗</a></div></div></article>
-                <article class="project" style="background: #101f3a; color: var(--cream);"><div class="project-top"><span class="project-number" style="color:var(--lime)">08 / notes</span><span>2026</span></div><div class="project-content"><h3>Quick Notes</h3><p>A simple note-taking app that saves ideas locally, helps with daily planning, and keeps everything lightweight.</p><div class="project-links"><a href="notes-app.html">View project ↗</a><a href="#about">Tech stack ↗</a></div></div></article>
-                <article class="project" style="background: #dceee2;"><div class="project-top"><span class="project-number" style="color:var(--green-dark)">09 / messaging</span><span>2026</span></div><div class="project-content"><h3>Gather Messages</h3><p>A responsive chat interface demo with searchable contacts, saved conversations, and a clean mobile layout.</p><div class="project-links"><a href="messaging-app.html">Open app ↗</a><a href="#about">Tech stack ↗</a></div></div></article>
+                <article class="project"><img class="project-image" src="assets/student-task-manager.png" alt="Student Task Manager interface showing tasks, completion progress, and study categories"><div class="project-top"><span class="project-number">01 / productivity</span><span>2026</span></div><div class="project-content"><h3>Student Task Manager</h3><p>A responsive study planner for adding, completing, filtering, and saving daily tasks in the browser.</p><div class="project-links"><a href="student-task-manager.html">View project ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/student-task-manager.html" target="_blank" rel="noreferrer">Source ↗</a></div></div></article>
+                <article class="project" style="background: var(--lime);"><div class="project-top"><span class="project-number" style="color:var(--coral)">02 / live data</span><span>2026</span></div><div class="project-content"><h3>Weather Dashboard</h3><p>A live city weather app using fetch, geocoding, current conditions, and a five-day forecast.</p><div class="project-links"><a href="weather-app.html">View project ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/weather-app.html" target="_blank" rel="noreferrer">Source ↗</a></div></div></article>
+                <article class="project" style="background: var(--coral); color: var(--cream);"><div class="project-top"><span class="project-number" style="color:var(--lime)">03 / finance</span><span>2026</span></div><div class="project-content"><h3>Paisa Expense Tracker</h3><p>A private finance dashboard for recording income, expenses, categories, and current balance with local storage.</p><div class="project-links"><a href="expense-tracker.html">View project ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/expense-tracker.html" target="_blank" rel="noreferrer">Source ↗</a></div></div></article>
+                <article class="project" style="background: #9ed7e5;"><div class="project-top"><span class="project-number" style="color:var(--coral)">04 / maps</span><span>2026</span></div><div class="project-content"><h3>LocateMe</h3><p>A privacy-first location demo that uses browser permission to show your own position on an interactive map.</p><div class="project-links"><a href="locateme.html">View project ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/locateme.html" target="_blank" rel="noreferrer">Source ↗</a></div></div></article>
+                <article class="project" style="background: #7367f0; color: var(--cream);"><div class="project-top"><span class="project-number" style="color:var(--lime)">05 / learning</span><span>2026</span></div><div class="project-content"><h3>CodeSprint Quiz</h3><p>An interactive frontend knowledge quiz with instant feedback, progress tracking, scoring, and restart flow.</p><div class="project-links"><a href="quiz-app.html">View project ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/quiz-app.html" target="_blank" rel="noreferrer">Source ↗</a></div></div></article>
+                <article class="project" style="background: #a8e3c1;"><div class="project-top"><span class="project-number" style="color:var(--coral)">06 / capstone</span><span>2026</span></div><div class="project-content"><h3>StudyHub Dashboard</h3><p>A student productivity workspace combining tasks, notes, a Pomodoro focus timer, and progress tracking.</p><div class="project-links"><a href="studyhub.html">View project ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/studyhub.html" target="_blank" rel="noreferrer">Source ↗</a></div></div></article>
+                <article class="project" style="background: #111827; color: var(--cream);"><div class="project-top"><span class="project-number" style="color:var(--accent)">07 / gaming</span><span>2026</span></div><div class="project-content"><h3>Traffic Rush</h3><p>A browser car dodging game built with canvas, keyboard controls, score tracking, and local best-score saving.</p><div class="project-links"><a href="car-game.html">View project ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/car-game.html" target="_blank" rel="noreferrer">Source ↗</a></div></div></article>
+                <article class="project" style="background: #101f3a; color: var(--cream);"><div class="project-top"><span class="project-number" style="color:var(--lime)">08 / notes</span><span>2026</span></div><div class="project-content"><h3>Quick Notes</h3><p>A simple note-taking app that saves ideas locally, helps with daily planning, and keeps everything lightweight.</p><div class="project-links"><a href="notes-app.html">View project ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/notes-app.html" target="_blank" rel="noreferrer">Source ↗</a></div></div></article>
+                <article class="project" style="background: #dceee2;"><div class="project-top"><span class="project-number" style="color:var(--green-dark)">09 / messaging</span><span>2026</span></div><div class="project-content"><h3>Gather Messages</h3><p>A responsive chat interface demo with searchable contacts, saved conversations, and a clean mobile layout.</p><div class="project-links"><a href="messaging-app.html">Open app ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/messaging-app.html" target="_blank" rel="noreferrer">Source ↗</a></div></div></article>
             </div>
         </section>
 
         <section class="shell section" id="study-lab">
-            <div class="section-heading"><h2>Study <em>lab.</em></h2><p>IGNOU BCA Semester 1 question papers, organized by subject and exam session.</p></div>
+            <div class="section-heading"><h2>Study <em>lab.</em></h2><p>IGNOU BCA Semester 1 papers, assignments, and block/unit study PDFs.</p></div>
             <article class="project" style="min-height: 290px; background: #dceee2; color: var(--ink);">
-                <div class="project-top"><span class="project-number" style="color: var(--coral);">IGNOU BCA / SEMESTER 1</span><span>2016 — 2026</span></div>
-                <div class="project-content"><h3>Previous year question papers</h3><p>Browse official papers for computing, mathematics, and English courses, with current and legacy codes clearly marked.</p><div class="project-links"><a href="study-lab.html">Open Study Lab ↗</a><a href="https://webservices.ignou.ac.in/Pre-Question/" target="_blank" rel="noreferrer">IGNOU archive ↗</a></div></div>
+                <div class="project-top"><span class="project-number" style="color: var(--coral);">IGNOU BCA / SEMESTER 1</span><span>PYQs · BOOKS · ASSIGNMENTS</span></div>
+                <div class="project-content"><h3>Semester 1 Study Lab</h3><p>Browse official question papers and assignments, or filter direct study PDFs by course code, block, and unit.</p><div class="project-links"><a href="study-lab.html">Open Study Lab ↗</a><a href="https://webservices.ignou.ac.in/Pre-Question/" target="_blank" rel="noreferrer">IGNOU archive ↗</a></div></div>
             </article>
         </section>
 
@@ -213,43 +215,43 @@
                     <div class="game-badge">Live game</div>
                     <h3>Traffic Rush</h3>
                     <p>Dodge traffic and beat your best score.</p>
-                    <div class="project-links"><a href="car-game.html">Play now ↗</a><a href="#work">Projects ↗</a></div>
+                    <div class="project-links"><a href="car-game.html">Play now ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/car-game.html" target="_blank" rel="noreferrer">Source ↗</a></div>
                 </article>
                 <article class="game-card">
                     <div class="game-badge">Live game</div>
                     <h3>Memory Match</h3>
                     <p>Flip cards and find every matching pair.</p>
-                    <div class="project-links"><a href="memory-match.html">Play now ↗</a><a href="#games">Lab ↗</a></div>
+                    <div class="project-links"><a href="memory-match.html">Play now ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/memory-match.html" target="_blank" rel="noreferrer">Source ↗</a></div>
                 </article>
                 <article class="game-card">
                     <div class="game-badge">Live game</div>
                     <h3>Tic Tac Toe</h3>
                     <p>A two-player classic. Get three in a row.</p>
-                    <div class="project-links"><a href="tic-tac-toe.html">Play now ↗</a><a href="#games">Lab ↗</a></div>
+                    <div class="project-links"><a href="tic-tac-toe.html">Play now ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/tic-tac-toe.html" target="_blank" rel="noreferrer">Source ↗</a></div>
                 </article>
                 <article class="game-card">
                     <div class="game-badge">Live game</div>
                     <h3>Whack-a-Mole</h3>
                     <p>Hit the mole before the timer runs out.</p>
-                    <div class="project-links"><a href="whack-a-mole.html">Play now ↗</a><a href="#games">Lab ↗</a></div>
+                    <div class="project-links"><a href="whack-a-mole.html">Play now ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/whack-a-mole.html" target="_blank" rel="noreferrer">Source ↗</a></div>
                 </article>
                 <article class="game-card">
                     <div class="game-badge">Live game</div>
                     <h3>Snake</h3>
                     <p>Eat, grow, and avoid running into yourself.</p>
-                    <div class="project-links"><a href="snake-game.html">Play now ↗</a><a href="#games">Lab ↗</a></div>
+                    <div class="project-links"><a href="snake-game.html">Play now ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/snake-game.html" target="_blank" rel="noreferrer">Source ↗</a></div>
                 </article>
                 <article class="game-card">
                     <div class="game-badge">Live game</div>
                     <h3>Pong</h3>
                     <p>Rally against the CPU. First to five wins.</p>
-                    <div class="project-links"><a href="pong-game.html">Play now ↗</a><a href="#games">Lab ↗</a></div>
+                    <div class="project-links"><a href="pong-game.html">Play now ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/pong-game.html" target="_blank" rel="noreferrer">Source ↗</a></div>
                 </article>
                 <article class="game-card">
                     <div class="game-badge">Live game</div>
                     <h3>Space Shooter</h3>
                     <p>Shoot incoming enemies and survive the swarm.</p>
-                    <div class="project-links"><a href="space-shooter.html">Play now ↗</a><a href="#games">Lab ↗</a></div>
+                    <div class="project-links"><a href="space-shooter.html">Play now ↗</a><a href="https://github.com/faizeaam/faiz-portfolio/blob/main/space-shooter.html" target="_blank" rel="noreferrer">Source ↗</a></div>
                 </article>
             </div>
         </section>
