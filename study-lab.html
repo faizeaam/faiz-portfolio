@@ -115,17 +115,17 @@
         </section>
         <div class="metrics" aria-label="Paper library summary">
             <div class="metric"><strong id="paper-count">0</strong><span>Verified PDFs</span></div>
-            <div class="metric"><strong>2016–2025</strong><span>Requested range</span></div>
+            <div class="metric"><strong>2016–2026</strong><span>Archive range</span></div>
             <div class="metric"><strong>IGNOU</strong><span>Source archive</span></div>
         </div>
         <section aria-labelledby="subjects-title">
             <div class="section-title"><h2 id="subjects-title">Semester 1 subjects</h2><p>Current BCA_NEW course structure</p></div>
             <div class="subjects">
-                <article class="subject"><span class="subject-code">BCS-111 · LEGACY BCS-011</span><h3>Computer Basics and PC Software</h3><p>Older official papers are listed below under BCS-011.</p><a href="#papers" data-course="BCS-111">View papers ↓</a></article>
+                <article class="subject"><span class="subject-code">BCS-111 · BCS-011</span><h3>Computer Basics and PC Software</h3><p>Older and recent official papers are listed below under both course codes.</p><a href="#papers" data-course="BCS-111">View papers ↓</a></article>
                 <article class="subject"><span class="subject-code">BCS-012</span><h3>Basic Mathematics</h3><p>Official papers are listed by June and December session.</p><a href="#papers" data-course="BCS-012">View papers ↓</a></article>
                 <article class="subject"><span class="subject-code">BCSL-013</span><h3>Computer Basics and PC Software Lab</h3><p>Official practical papers are listed below by set.</p><a href="#papers" data-course="BCSL-013">View papers ↓</a></article>
-                <article class="subject"><span class="subject-code">BEVAE-181</span><h3>Environmental Studies</h3><p>Check the official archive for available sessions and current-code papers.</p><a href="https://webservices.ignou.ac.in/Pre-Question/" target="_blank" rel="noreferrer">Check official archive ↗</a></article>
-                <article class="subject"><span class="subject-code">BEGLA-136</span><h3>English at Work Place</h3><p>Check the official archive for available sessions and current-code papers.</p><a href="https://webservices.ignou.ac.in/Pre-Question/" target="_blank" rel="noreferrer">Check official archive ↗</a></article>
+                <article class="subject"><span class="subject-code">BEVAE-181</span><h3>Environmental Studies</h3><p>Available official papers are listed below by exam session.</p><a href="#papers" data-course="BEVAE-181">View papers ↓</a></article>
+                <article class="subject"><span class="subject-code">BEGLA-136</span><h3>English at Work Place</h3><p>Available official papers are listed below by exam session.</p><a href="#papers" data-course="BEGLA-136">View papers ↓</a></article>
                 <article class="subject"><span class="subject-code">FEG-02 · LEGACY FEG-2</span><h3>Foundation Course in English-2</h3><p>Older official papers are listed below under FEG-2.</p><a href="#papers" data-course="FEG-02">View papers ↓</a></article>
             </div>
         </section>
@@ -139,7 +139,7 @@
             <div class="paper-list" id="paper-list" aria-live="polite"></div>
         </section>
         <aside class="source-note">
-            <span>Verified direct links cover selected official archive sessions from 2016–2024, not every session. BCS-011 is matched to BCS-111 and FEG-2 to FEG-02. No direct links were verified here for BEVAE-181 or BEGLA-136; check the official index for updates.</span>
+            <span>Direct links are verified against IGNOU's official archive. BCS-011 is matched to BCS-111 and FEG-2 to FEG-02. The June 2026 BCSL-013 practical paper was not listed in the official archive.</span>
             <a href="https://webservices.ignou.ac.in/Pre-Question/" target="_blank" rel="noreferrer">Open IGNOU question paper archive ↗</a>
         </aside>
     </main>
@@ -167,6 +167,8 @@
             "BCS-011": "Computer Basics and PC Software",
             "BCS-012": "Basic Mathematics",
             "BCSL-013": "Computer Basics and PC Software Lab",
+            "BEVAE-181": "Environmental Studies",
+            "BEGLA-136": "English at Work Place",
             "FEG-2": "Foundation Course in English-2"
         };
         const courseCodes = { "BCS-011": "BCS-111", "FEG-2": "FEG-02" };
@@ -180,6 +182,42 @@
             url: `${archiveRoot}Question%20Paper%20${term}%20${year}/SOCIS/BCA/${code}.PDF`
         })));
         const supplementalSessions = [
+            [2024, "December", [
+                ["BCS-012", "BCS-012", "", "https://www.ignou.ac.in/viewFile/ldd/downloads/BCS-012.pdf"],
+                ["BCSL-013", "BCSL-013", "Set-I", "https://www.ignou.ac.in/viewFile/ldd/downloads/BCSL-013(Set-I).pdf"],
+                ["BCSL-013", "BCSL-013", "Set-II", "https://www.ignou.ac.in/viewFile/ldd/downloads/BCSL-013(Set-II).pdf"],
+                ["BCSL-013", "BCSL-013", "Set-III", "https://www.ignou.ac.in/viewFile/ldd/downloads/BCSL-013(Set-III).pdf"],
+                ["BCSL-013", "BCSL-013", "Set-IV", "https://www.ignou.ac.in/viewFile/ldd/downloads/BCSL-013(Set-IV).pdf"],
+                ["BEVAE-181", "BEVAE-181", "", "https://www.ignou.ac.in/viewFile/ldd/downloads/BEVAE-181.pdf"],
+                ["BEGLA-136", "BEGLA-136", "", "https://www.ignou.ac.in/viewFile/ldd/downloads/BEGLA-136.pdf"]
+            ]],
+            [2025, "June", [
+                ["BCS-012", "BCS-012", "", "https://www.ignou.ac.in/viewFile/ldd/qpjune2025/BCS-012.pdf"],
+                ["BCSL-013", "BCSL-013", "Set-I", "https://www.ignou.ac.in/viewFile/ldd/qpjune2025/BCSL-013(Set-I).pdf"],
+                ["BCSL-013", "BCSL-013", "Set-II", "https://www.ignou.ac.in/viewFile/ldd/qpjune2025/BCSL-013(Set-II).pdf"],
+                ["BCSL-013", "BCSL-013", "Set-III", "https://www.ignou.ac.in/viewFile/ldd/qpjune2025/BCSL-013(Set-III).pdf"],
+                ["BCSL-013", "BCSL-013", "Set-IV", "https://www.ignou.ac.in/viewFile/ldd/qpjune2025/BCSL-013(Set-IV).pdf"],
+                ["BEVAE-181", "BEVAE-181", "", "https://www.ignou.ac.in/viewFile/ldd/qpjune2025/BEVAE-181.pdf"],
+                ["BEGLA-136", "BEGLA-136", "", "https://www.ignou.ac.in/viewFile/ldd/qpjune2025/BEGLA-136.pdf"]
+            ]],
+            [2025, "December", [
+                ["BCS-012", "BCS-012", "", "https://www.ignou.ac.in/viewFile/ldd/qpdec2025/BCS-012.pdf"],
+                ["BCSL-013", "BCSL-013", "Set-I", "https://www.ignou.ac.in/viewFile/ldd/downloads/BCSL-013(Set-I).pdf"],
+                ["BCSL-013", "BCSL-013", "Set-II", "https://www.ignou.ac.in/viewFile/ldd/downloads/BCSL-013(Set-II).pdf"],
+                ["BCSL-013", "BCSL-013", "Set-III", "https://www.ignou.ac.in/viewFile/ldd/downloads/BCSL-013(Set-III).pdf"],
+                ["BCSL-013", "BCSL-013", "Set-IV", "https://www.ignou.ac.in/viewFile/ldd/downloads/BCSL-013(Set-IV).pdf"],
+                ["BEVAE-181", "BEVAE-181", "", "https://www.ignou.ac.in/viewFile/ldd/qpdec2025/BEVAE-181.pdf"],
+                ["BEGLA-136", "BEGLA-136", "", "https://www.ignou.ac.in/viewFile/ldd/qpdec2025/BEGLA-136.pdf"]
+            ]],
+            [2026, "June", [
+                ["BCS-012", "BCS-012", "", "https://www.ignou.ac.in/viewFile/ldd/qpjune2026/BCS-012.pdf"],
+                ["BEVAE-181", "BEVAE-181", "", "https://www.ignou.ac.in/viewFile/ldd/qpjune2026/BEVAE-181.pdf"],
+                ["BEGLA-136", "BEGLA-136", "", "https://www.ignou.ac.in/viewFile/ldd/qpjune2026/BEGLA-136.pdf"]
+            ]],
+            [2024, "December", [["BCS-111", "BCS-011-BCS-111", "", "https://www.ignou.ac.in/viewFile/ldd/downloads/BCS-011-BCS-111.pdf"]]],
+            [2025, "June", [["BCS-111", "BCS-011", "", "https://www.ignou.ac.in/viewFile/ldd/qpjune2025/BCS-011.pdf"]]],
+            [2025, "December", [["BCS-111", "BCS-011", "", "https://www.ignou.ac.in/viewFile/ldd/qpdec2025/BCS-011.pdf"]]],
+            [2026, "June", [["BCS-111", "BCS-011-BCS-111", "", "https://www.ignou.ac.in/viewFile/ldd/qpjune2026/BCS-011-BCS-111.pdf"]]],
             [2016, "June", [
                 ["BCSL-013", "S1", "SOCIS/BCA-MCA/BCSL-013-Set-1.PDF"],
                 ["BCSL-013", "S2", "SOCIS/BCA-MCA/BCSL-013-Set-2.PDF"],
@@ -221,15 +259,21 @@
             [2020, "December", [["FEG-2", "", "SOH/BDP/FEG-2.pdf"]]],
             [2021, "December", [["FEG-2", "", "SOH/BDP/FEG-2.pdf"]]]
         ];
-        const supplementalPapers = supplementalSessions.flatMap(([year, term, entries]) => entries.map(([code, set, path]) => ({
-            year,
-            term,
-            code: set ? `${code} ${set}` : code,
-            course: courseCodes[code] || code,
-            name: `${subjectNames[code]}${set ? ` · ${set}` : ""}`,
-            legacy: code === "FEG-2",
-            url: `${archiveRoot}Question%20Paper%20${term}%20${year}/${path}`
-        })));
+        const supplementalPapers = supplementalSessions.flatMap(([year, term, entries]) => entries.map(entry => {
+            const [course, code, set, path] = entry.length === 3
+                ? [courseCodes[entry[0]] || entry[0], entry[0], entry[1], entry[2]]
+                : entry;
+            const name = subjectNames[code] || subjectNames[courseCodes[code]] || (course === "BCS-111" ? subjectNames["BCS-011"] : "");
+            return {
+                year,
+                term,
+                code: set ? `${code} ${set}` : code,
+                course: course || courseCodes[code] || code,
+                name: `${name}${set ? ` · ${set}` : ""}`,
+                legacy: code === "BCS-011" || code === "FEG-2",
+                url: path.startsWith("https://") ? path : `${archiveRoot}Question%20Paper%20${term}%20${year}/${path}`
+            };
+        }));
         const papers = [...corePapers, ...supplementalPapers];
         const subjectFilter = document.querySelector("#subject-filter");
         const yearFilter = document.querySelector("#year-filter");
@@ -237,7 +281,7 @@
         const paperList = document.querySelector("#paper-list");
         const resultSummary = document.querySelector("#result-summary");
 
-        for (let year = 2025; year >= 2016; year -= 1) {
+        for (let year = 2026; year >= 2016; year -= 1) {
             const option = document.createElement("option");
             option.value = year;
             option.textContent = year;
