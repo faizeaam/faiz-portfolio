@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="IGNOU BCA Semester 1 previous year question papers, organized by subject and session.">
+    <meta name="theme-color" content="#f2f5ef">
+    <title>Study Lab | IGNOU BCA Semester 1 PYQs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #17362f;
+            --muted: #64776f;
+            --paper: #f2f5ef;
+            --white: #fffefa;
+            --green: #237352;
+            --lime: #d9ef70;
+            --coral: #e77760;
+            --line: rgba(23, 54, 47, .16);
+            --mono: "DM Mono", monospace;
+            --display: "Space Grotesk", sans-serif;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--display); }
+        a { color: inherit; }
+        button, input, select { font: inherit; }
+        .shell { width: min(1120px, calc(100% - 48px)); margin: auto; }
+        header { padding: 22px 0; border-bottom: 1px solid var(--line); }
+        .topbar { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; text-decoration: none; }
+        .brand-mark { display: grid; width: 34px; aspect-ratio: 1; place-items: center; border-radius: 50%; background: var(--lime); font: 11px var(--mono); }
+        .back-link { color: var(--muted); font: 11px var(--mono); text-decoration: none; }
+        .back-link:hover { color: var(--coral); }
+        main { padding: 58px 0 76px; }
+        .intro { display: grid; grid-template-columns: 1fr auto; gap: 38px; align-items: end; padding-bottom: 30px; border-bottom: 1px solid var(--line); }
+        .eyebrow { margin: 0 0 17px; color: var(--green); font: 11px var(--mono); text-transform: uppercase; }
+        h1 { margin: 0; font-size: 58px; line-height: 1; font-weight: 600; }
+        h1 span { color: var(--green); }
+        .intro-copy { max-width: 330px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+        .metrics { display: flex; gap: 0; margin: 24px 0 35px; border-block: 1px solid var(--line); }
+        .metric { min-width: 150px; padding: 14px 22px 14px 0; margin-right: 22px; border-right: 1px solid var(--line); }
+        .metric:last-child { border: 0; }
+        .metric strong { display: block; font-size: 22px; font-weight: 600; }
+        .metric span { color: var(--muted); font: 9px var(--mono); text-transform: uppercase; }
+        .section-title { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; margin-bottom: 18px; }
+        h2 { margin: 0; font-size: 22px; font-weight: 600; }
+        .section-title p { margin: 0; color: var(--muted); font-size: 12px; }
+        .subjects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+        .subject { min-height: 148px; padding: 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(255, 254, 250, .48); }
+        .subject-code { color: var(--green); font: 10px var(--mono); }
+        .subject h3 { margin: 10px 0 7px; font-size: 16px; font-weight: 600; }
+        .subject p { min-height: 32px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+        .subject a { display: inline-flex; margin-top: 14px; color: var(--green); font: 10px var(--mono); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+        .paper-section { margin-top: 54px; scroll-margin-top: 20px; }
+        .filters { display: grid; grid-template-columns: 1.1fr 1fr .8fr; gap: 10px; margin: 20px 0 0; }
+        .filters label { display: grid; gap: 7px; color: var(--muted); font: 9px var(--mono); text-transform: uppercase; }
+        .filters select, .filters input { width: 100%; min-height: 44px; padding: 0 12px; color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 0; outline: none; font: 12px var(--display); }
+        .filters select:focus, .filters input:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(35, 115, 82, .12); }
+        .paper-list { margin-top: 16px; border-top: 1px solid var(--line); }
+        .paper-row { display: grid; grid-template-columns: minmax(0, 1fr) 130px 100px auto; gap: 18px; align-items: center; min-height: 61px; border-bottom: 1px solid var(--line); }
+        .paper-name { font-size: 13px; font-weight: 600; }
+        .paper-code, .paper-date { color: var(--muted); font: 10px var(--mono); }
+        .paper-link { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 12px; color: var(--white); background: var(--ink); font: 10px var(--mono); text-decoration: none; }
+        .paper-link:hover { background: var(--green); }
+        .empty { padding: 26px 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+        .empty a { color: var(--green); }
+        .source-note { display: flex; justify-content: space-between; gap: 24px; margin-top: 42px; padding-top: 15px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; line-height: 1.6; }
+        .source-note a { color: var(--green); white-space: nowrap; }
+        footer { padding: 18px 0; border-top: 1px solid var(--line); color: var(--muted); font: 9px var(--mono); }
+        @media (max-width: 760px) {
+            .shell { width: min(100% - 32px, 560px); }
+            main { padding: 42px 0 55px; }
+            .intro { grid-template-columns: 1fr; gap: 18px; }
+            h1 { font-size: 46px; }
+            .intro-copy { max-width: 500px; }
+            .subjects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .filters { grid-template-columns: 1fr 1fr; }
+            .filters label:last-child { grid-column: 1 / -1; }
+            .paper-row { grid-template-columns: minmax(0, 1fr) auto; gap: 5px 12px; padding: 12px 0; }
+            .paper-name { grid-column: 1; }
+            .paper-code { grid-column: 1; }
+            .paper-date { grid-column: 1; }
+            .paper-link { grid-column: 2; grid-row: 1 / span 3; }
+            .source-note { display: block; }
+            .source-note a { display: inline-block; margin-top: 8px; }
+        }
+        @media (max-width: 470px) {
+            .subjects { grid-template-columns: 1fr; }
+            .subject { min-height: 0; }
+            .metrics { justify-content: space-between; }
+            .metric { min-width: 0; margin-right: 10px; padding-right: 10px; }
+            .metric strong { font-size: 18px; }
+            .metric span { font-size: 8px; }
+            .section-title { display: block; }
+            .section-title p { margin-top: 7px; }
+            .filters { grid-template-columns: 1fr; }
+            .filters label:last-child { grid-column: auto; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="shell topbar" aria-label="Main navigation">
+            <a class="brand" href="index.html"><span class="brand-mark">SL</span> STUDY LAB</a>
+            <a class="back-link" href="index.html">← Back to portfolio</a>
+        </nav>
+    </header>
+    <main class="shell">
+        <section class="intro" aria-labelledby="page-title">
+            <div><p class="eyebrow">IGNOU / BCA / Semester 1</p><h1 id="page-title">Past papers,<br><span>clearer prep.</span></h1></div>
+            <p class="intro-copy">Find official IGNOU question papers by subject and exam session. Older papers use the course codes active at the time.</p>
+        </section>
+        <div class="metrics" aria-label="Paper library summary">
+            <div class="metric"><strong id="paper-count">0</strong><span>Verified PDFs</span></div>
+            <div class="metric"><strong>2016–2025</strong><span>Requested range</span></div>
+            <div class="metric"><strong>IGNOU</strong><span>Source archive</span></div>
+        </div>
+        <section aria-labelledby="subjects-title">
+            <div class="section-title"><h2 id="subjects-title">Semester 1 subjects</h2><p>Current BCA_NEW course structure</p></div>
+            <div class="subjects">
+                <article class="subject"><span class="subject-code">BCS-111 · LEGACY BCS-011</span><h3>Computer Basics and PC Software</h3><p>Older official papers are listed below under BCS-011.</p><a href="#papers" data-course="BCS-111">View papers ↓</a></article>
+                <article class="subject"><span class="subject-code">BCS-012</span><h3>Basic Mathematics</h3><p>Official papers are listed by June and December session.</p><a href="#papers" data-course="BCS-012">View papers ↓</a></article>
+                <article class="subject"><span class="subject-code">BCSL-013</span><h3>Computer Basics and PC Software Lab</h3><p>Official practical papers are listed below by set.</p><a href="#papers" data-course="BCSL-013">View papers ↓</a></article>
+                <article class="subject"><span class="subject-code">BEVAE-181</span><h3>Environmental Studies</h3><p>Check the official archive for available sessions and current-code papers.</p><a href="https://webservices.ignou.ac.in/Pre-Question/" target="_blank" rel="noreferrer">Check official archive ↗</a></article>
+                <article class="subject"><span class="subject-code">BEGLA-136</span><h3>English at Work Place</h3><p>Check the official archive for available sessions and current-code papers.</p><a href="https://webservices.ignou.ac.in/Pre-Question/" target="_blank" rel="noreferrer">Check official archive ↗</a></article>
+                <article class="subject"><span class="subject-code">FEG-02 · LEGACY FEG-2</span><h3>Foundation Course in English-2</h3><p>Older official papers are listed below under FEG-2.</p><a href="#papers" data-course="FEG-02">View papers ↓</a></article>
+            </div>
+        </section>
+        <section class="paper-section" id="papers" aria-labelledby="papers-title">
+            <div class="section-title"><h2 id="papers-title">Question papers</h2><p id="result-summary" aria-live="polite"></p></div>
+            <div class="filters">
+                <label for="subject-filter">Subject<select id="subject-filter"><option value="all">All verified subjects</option><option value="BCS-111">BCS-111 / older BCS-011</option><option value="BCS-012">BCS-012 Basic Mathematics</option><option value="BCSL-013">BCSL-013 Lab</option><option value="BEVAE-181">BEVAE-181 Environmental Studies</option><option value="BEGLA-136">BEGLA-136 English at Work Place</option><option value="FEG-02">FEG-02 Foundation English</option></select></label>
+                <label for="year-filter">Year<select id="year-filter"><option value="all">All years</option></select></label>
+                <label for="search-filter">Search<input id="search-filter" type="search" placeholder="Course code or session"></label>
+            </div>
+            <div class="paper-list" id="paper-list" aria-live="polite"></div>
+        </section>
+        <aside class="source-note">
+            <span>Verified direct links cover selected official archive sessions from 2016–2024, not every session. BCS-011 is matched to BCS-111 and FEG-2 to FEG-02. No direct links were verified here for BEVAE-181 or BEGLA-136; check the official index for updates.</span>
+            <a href="https://webservices.ignou.ac.in/Pre-Question/" target="_blank" rel="noreferrer">Open IGNOU question paper archive ↗</a>
+        </aside>
+    </main>
+    <footer><div class="shell">Study Lab · IGNOU BCA Semester 1</div></footer>
+    <script>
+        const archiveRoot = "https://webservices.ignou.ac.in/Pre-Question/";
+        const sessions = [
+            [2016, "June", ["BCS-011", "BCS-012"]],
+            [2016, "December", ["BCS-011", "BCS-012"]],
+            [2017, "June", ["BCS-011", "BCS-012"]],
+            [2017, "December", ["BCS-011", "BCS-012"]],
+            [2018, "June", ["BCS-011", "BCS-012"]],
+            [2018, "December", ["BCS-011", "BCS-012"]],
+            [2019, "June", ["BCS-011", "BCS-012"]],
+            [2019, "December", ["BCS-011", "BCS-012"]],
+            [2020, "June", ["BCS-011", "BCS-012"]],
+            [2020, "December", ["BCS-011", "BCS-012"]],
+            [2021, "December", ["BCS-012"]],
+            [2022, "December", ["BCS-011", "BCS-012"]],
+            [2023, "June", ["BCS-011", "BCS-012"]],
+            [2023, "December", ["BCS-011", "BCS-012"]],
+            [2024, "June", ["BCS-011", "BCS-012"]]
+        ];
+        const subjectNames = {
+            "BCS-011": "Computer Basics and PC Software",
+            "BCS-012": "Basic Mathematics",
+            "BCSL-013": "Computer Basics and PC Software Lab",
+            "FEG-2": "Foundation Course in English-2"
+        };
+        const courseCodes = { "BCS-011": "BCS-111", "FEG-2": "FEG-02" };
+        const corePapers = sessions.flatMap(([year, term, codes]) => codes.map(code => ({
+            year,
+            term,
+            code,
+            course: courseCodes[code] || code,
+            name: subjectNames[code],
+            legacy: code === "BCS-011",
+            url: `${archiveRoot}Question%20Paper%20${term}%20${year}/SOCIS/BCA/${code}.PDF`
+        })));
+        const supplementalSessions = [
+            [2016, "June", [
+                ["BCSL-013", "S1", "SOCIS/BCA-MCA/BCSL-013-Set-1.PDF"],
+                ["BCSL-013", "S2", "SOCIS/BCA-MCA/BCSL-013-Set-2.PDF"],
+                ["BCSL-013", "S3", "SOCIS/BCA-MCA/BCSL-013-Set-3.PDF"],
+                ["BCSL-013", "S4", "SOCIS/BCA-MCA/BCSL-013-Set-4.PDF"],
+                ["FEG-2", "", "SOH/BDP/FEG-2.PDF"]
+            ]],
+            [2016, "December", [
+                ["BCSL-013", "S1", "SOCIS/BCA-MCA/BCSL-013-P-S1.PDF"],
+                ["BCSL-013", "S2", "SOCIS/BCA-MCA/BCSL-013-P-S2.PDF"],
+                ["BCSL-013", "S3", "SOCIS/BCA-MCA/BCSL-013-P-S3.PDF"],
+                ["BCSL-013", "S4", "SOCIS/BCA-MCA/BCSL-013-P-S4.PDF"],
+                ["FEG-2", "", "SOH/BDP/FEG-2.PDF"]
+            ]],
+            [2017, "June", [
+                ["BCSL-013", "S1", "SOCIS/BCA-MCA/BCSL-013-P-S1.PDF"],
+                ["BCSL-013", "S2", "SOCIS/BCA-MCA/BCSL-013-P-S2.PDF"],
+                ["BCSL-013", "S3", "SOCIS/BCA-MCA/BCSL-013-P-S3.PDF"],
+                ["BCSL-013", "S4", "SOCIS/BCA-MCA/BCSL-013-P-S4.PDF"]
+            ]],
+            [2017, "December", [
+                ["BCSL-013", "S1", "SOCIS/BCA.MCA/BCSL-013-P-S1.PDF"],
+                ["BCSL-013", "S2", "SOCIS/BCA.MCA/BCSL-013-P-S2.PDF"],
+                ["BCSL-013", "S3", "SOCIS/BCA.MCA/BCSL-013-P-S3.PDF"],
+                ["BCSL-013", "S4", "SOCIS/BCA.MCA/BCSL-013-P-S4.PDF"],
+                ["FEG-2", "", "SOH/BDP/FEG-2.PDF"]
+            ]],
+            [2018, "June", [
+                ["BCSL-013", "S1", "SOCIS/BCA.MCA/BCSL-013(P)-S1.PDF"],
+                ["BCSL-013", "S2", "SOCIS/BCA.MCA/BCSL-013(P)-S2.PDF"],
+                ["BCSL-013", "S3", "SOCIS/BCA.MCA/BCSL-013(P)-S3.PDF"],
+                ["BCSL-013", "S4", "SOCIS/BCA.MCA/BCSL-013(P)-S4.PDF"],
+                ["FEG-2", "", "SOH/BDP/FEG-2.PDF"]
+            ]],
+            [2018, "December", [["FEG-2", "", "SOH/BDP/FEG%20-2.PDF"]]],
+            [2019, "June", [["FEG-2", "", "SOH/BDP/FEG%20-2.PDF"]]],
+            [2019, "December", [["FEG-2", "", "SOH/BDP/FEG-2.PDF"]]],
+            [2020, "June", [["FEG-2", "", "SOH/BDP/FEG-2.PDF"]]],
+            [2020, "December", [["FEG-2", "", "SOH/BDP/FEG-2.pdf"]]],
+            [2021, "December", [["FEG-2", "", "SOH/BDP/FEG-2.pdf"]]]
+        ];
+        const supplementalPapers = supplementalSessions.flatMap(([year, term, entries]) => entries.map(([code, set, path]) => ({
+            year,
+            term,
+            code: set ? `${code} ${set}` : code,
+            course: courseCodes[code] || code,
+            name: `${subjectNames[code]}${set ? ` · ${set}` : ""}`,
+            legacy: code === "FEG-2",
+            url: `${archiveRoot}Question%20Paper%20${term}%20${year}/${path}`
+        })));
+        const papers = [...corePapers, ...supplementalPapers];
+        const subjectFilter = document.querySelector("#subject-filter");
+        const yearFilter = document.querySelector("#year-filter");
+        const searchFilter = document.querySelector("#search-filter");
+        const paperList = document.querySelector("#paper-list");
+        const resultSummary = document.querySelector("#result-summary");
+
+        for (let year = 2025; year >= 2016; year -= 1) {
+            const option = document.createElement("option");
+            option.value = year;
+            option.textContent = year;
+            yearFilter.append(option);
+        }
+
+        function renderPapers() {
+            const search = searchFilter.value.trim().toLowerCase();
+            const visiblePapers = papers.filter(paper => {
+                const matchesSubject = subjectFilter.value === "all" || paper.course === subjectFilter.value;
+                const matchesYear = yearFilter.value === "all" || paper.year === Number(yearFilter.value);
+                const matchesSearch = `${paper.code} ${paper.course} ${paper.name} ${paper.year} ${paper.term}`.toLowerCase().includes(search);
+                return matchesSubject && matchesYear && matchesSearch;
+            });
+            resultSummary.textContent = `${visiblePapers.length} ${visiblePapers.length === 1 ? "paper" : "papers"}`;
+            paperList.innerHTML = visiblePapers.length ? visiblePapers.map(paper => `<article class="paper-row"><span class="paper-name">${paper.name}</span><span class="paper-code">${paper.code}${paper.legacy ? " · legacy" : ""}</span><span class="paper-date">${paper.term} ${paper.year}</span><a class="paper-link" href="${paper.url}" target="_blank" rel="noopener noreferrer">Open PDF ↗</a></article>`).join("") : `<p class="empty">No verified direct PDFs match these filters. Check the <a href="${archiveRoot}" target="_blank" rel="noreferrer">official IGNOU archive</a> for other Semester 1 subjects and newer sessions.</p>`;
+        }
+
+        document.querySelectorAll("[data-course]").forEach(link => link.addEventListener("click", () => {
+            subjectFilter.value = link.dataset.course;
+            renderPapers();
+        }));
+        subjectFilter.addEventListener("change", renderPapers);
+        yearFilter.addEventListener("change", renderPapers);
+        searchFilter.addEventListener("input", renderPapers);
+        document.querySelector("#paper-count").textContent = papers.length;
+        renderPapers();
+    </script>
+</body>
+</html>
